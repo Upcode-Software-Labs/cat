@@ -1,0 +1,34 @@
+{
+  "catApp": {
+    "assessment": {
+      "home": {
+        "title": "Assessments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Assessment बनाएँ",
+        "createOrEditLabel": "Assessment बनाएँ या संपादित करें",
+        "notFound": "No Assessments found"
+      },
+      "created": "एक नया Assessment [identifier: {{ param }}] तैयार है",
+      "updated": "एक Assessment [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Assessment [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Assessment [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Assessment"
+      },
+      "id": "ID",
+      "title": "Title",
+      "description": "Description",
+      "languageFramework": "Language Framework",
+      "difficultyLevel": "Difficulty Level",
+      "timeLimit": "Time Limit",
+      "type": "Type",
+      "validationCriteria": "Validation Criteria",
+      "question": "Question",
+      "maxPoints": "Max Points",
+      "deadline": "Deadline",
+      "assignedToUser": "Assigned To User"
+    }
+  }
+}

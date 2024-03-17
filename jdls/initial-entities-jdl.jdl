@@ -1,0 +1,109 @@
+entity User {
+  username String required minlength(3),
+  email String required,
+  passwordHash String required,
+  role String required,
+  registrationDate Instant,
+  lastLogin Instant
+}
+
+
+entity Assessment {
+  title String required,
+  description TextBlob,
+  languageFramework String,
+  difficultyLevel String,
+  timeLimit Integer
+  type String required,
+  validationCriteria String required,
+  question String required,
+  maxPoints Integer required,
+  deadline ZonedDateTime required
+}
+
+
+
+entity UserAssessment {
+  status AssessmentStatus required,
+  assignedAt Instant required,
+  deadline Instant
+}
+
+enum AssessmentStatus {
+  ASSIGNED
+  COMPLETED
+}
+
+// User Module
+entity Submission {
+  githubUrl String required,
+  screenshots ImageBlob,
+  videoExplanation String,
+  textDescription String,
+  feedback TextBlob,
+  pointsScored Integer
+}
+
+// Relationships
+relationship ManyToOne {
+  Assessment{assignedToUser} to User,
+  UserAssessment{submittedByUser} to User,
+  Submission{forAssignment} to UserAssessment
+}
+
+
+entity Question {
+  questionText TextBlob required,
+  codeSnippet TextBlob,
+  resources String,
+  points Integer
+}
+
+entity ValidationRule {
+  description TextBlob required,
+  validationScript TextBlob,
+  ruleType String required
+}
+
+entity SubmissionResult {
+  totalPoints Integer,
+  detailedResults TextBlob,
+  feedback TextBlob
+}
+
+entity AuditLog {
+  action String required,
+  performedAt Instant required,
+  details TextBlob
+}
+
+
+relationship ManyToOne {
+  Question{assessment} to Assessment,
+  Submission{user} to User,
+  Submission{assessment} to Assessment,
+  ValidationRule{assessment} to Assessment,
+  UserAssessment{user} to User,
+  UserAssessment{assessment} to Assessment,
+  SubmissionResult{submission} to Submission,
+  AuditLog{user} to User
+}
+
+// Enumerations for specific fields
+enum Role {
+  ADMIN, USER, VALIDATOR
+}
+
+enum Status {
+  ASSIGNED, IN_PROGRESS, COMPLETED
+}
+
+
+// Pagination for entities that might have many records
+paginate User, Assessment, Submission, UserAssessment,  AuditLog with pagination
+
+// Using DTOs to decouple your domain logic from your JSON entries
+dto * with mapstruct
+
+// Applying service layer between controller and repository
+service * with serviceClass

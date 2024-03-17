@@ -1,0 +1,40 @@
+{
+  "annotations": {
+    "changelogDate": "20240317054845"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "entityTableName": "question",
+  "fields": [
+    {
+      "fieldName": "questionText",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "codeSnippet",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "resources",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "points",
+      "fieldType": "Integer"
+    }
+  ],
+  "name": "Question",
+  "relationships": [
+    {
+      "otherEntityName": "assessment",
+      "relationshipName": "assessment",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

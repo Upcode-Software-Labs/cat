@@ -1,0 +1,44 @@
+{
+  "annotations": {
+    "changelogDate": "20240317054445"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "entityTableName": "user",
+  "fields": [
+    {
+      "fieldName": "username",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength"],
+      "fieldValidateRulesMinlength": "3"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "passwordHash",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "role",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "registrationDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastLogin",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "User",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

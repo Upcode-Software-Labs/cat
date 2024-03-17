@@ -1,0 +1,27 @@
+{
+  "catApp": {
+    "validationRule": {
+      "home": {
+        "title": "ValidationRules",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Validation Rule बनाएँ",
+        "createOrEditLabel": "Validation Rule बनाएँ या संपादित करें",
+        "notFound": "No Validation Rules found"
+      },
+      "created": "एक नया Validation Rule [identifier: {{ param }}] तैयार है",
+      "updated": "एक Validation Rule [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Validation Rule [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Validation Rule [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Validation Rule"
+      },
+      "id": "ID",
+      "description": "Description",
+      "validationScript": "Validation Script",
+      "ruleType": "Rule Type",
+      "assessment": "Assessment"
+    }
+  }
+}

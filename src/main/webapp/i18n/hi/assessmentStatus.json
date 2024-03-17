@@ -1,0 +1,9 @@
+{
+  "catApp": {
+    "AssessmentStatus": {
+      "null": "",
+      "ASSIGNED": "ASSIGNED",
+      "COMPLETED": "COMPLETED"
+    }
+  }
+}

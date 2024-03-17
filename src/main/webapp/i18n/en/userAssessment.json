@@ -1,0 +1,29 @@
+{
+  "catApp": {
+    "userAssessment": {
+      "home": {
+        "title": "User Assessments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new User Assessment",
+        "createOrEditLabel": "Create or edit a User Assessment",
+        "notFound": "No User Assessments found"
+      },
+      "created": "A new User Assessment is created with identifier {{ param }}",
+      "updated": "A User Assessment is updated with identifier {{ param }}",
+      "deleted": "A User Assessment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete User Assessment {{ id }}?"
+      },
+      "detail": {
+        "title": "User Assessment"
+      },
+      "id": "ID",
+      "status": "Status",
+      "assignedAt": "Assigned At",
+      "deadline": "Deadline",
+      "submittedByUser": "Submitted By User",
+      "user": "User",
+      "assessment": "Assessment"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20240317055045"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "entityTableName": "submission_result",
+  "fields": [
+    {
+      "fieldName": "totalPoints",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "detailedResults",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "feedback",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    }
+  ],
+  "name": "SubmissionResult",
+  "relationships": [
+    {
+      "otherEntityName": "submission",
+      "relationshipName": "submission",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

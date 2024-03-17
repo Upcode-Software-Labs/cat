@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20240317054645"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "entityTableName": "user_assessment",
+  "fields": [
+    {
+      "fieldName": "status",
+      "fieldType": "AssessmentStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ASSIGNED,COMPLETED"
+    },
+    {
+      "fieldName": "assignedAt",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "deadline",
+      "fieldType": "Instant"
+    }
+  ],
+  "name": "UserAssessment",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "user",
+      "relationshipName": "submittedByUser",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "assessment",
+      "relationshipName": "assessment",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

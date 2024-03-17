@@ -1,0 +1,27 @@
+{
+  "catApp": {
+    "submissionResult": {
+      "home": {
+        "title": "SubmissionResults",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Submission Result बनाएँ",
+        "createOrEditLabel": "Submission Result बनाएँ या संपादित करें",
+        "notFound": "No Submission Results found"
+      },
+      "created": "एक नया Submission Result [identifier: {{ param }}] तैयार है",
+      "updated": "एक Submission Result [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Submission Result [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Submission Result [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Submission Result"
+      },
+      "id": "ID",
+      "totalPoints": "Total Points",
+      "detailedResults": "Detailed Results",
+      "feedback": "Feedback",
+      "submission": "Submission"
+    }
+  }
+}

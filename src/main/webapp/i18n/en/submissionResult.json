@@ -1,0 +1,27 @@
+{
+  "catApp": {
+    "submissionResult": {
+      "home": {
+        "title": "Submission Results",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Submission Result",
+        "createOrEditLabel": "Create or edit a Submission Result",
+        "notFound": "No Submission Results found"
+      },
+      "created": "A new Submission Result is created with identifier {{ param }}",
+      "updated": "A Submission Result is updated with identifier {{ param }}",
+      "deleted": "A Submission Result is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Submission Result {{ id }}?"
+      },
+      "detail": {
+        "title": "Submission Result"
+      },
+      "id": "ID",
+      "totalPoints": "Total Points",
+      "detailedResults": "Detailed Results",
+      "feedback": "Feedback",
+      "submission": "Submission"
+    }
+  }
+}

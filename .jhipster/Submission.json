@@ -1,0 +1,61 @@
+{
+  "annotations": {
+    "changelogDate": "20240317054745"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "entityTableName": "submission",
+  "fields": [
+    {
+      "fieldName": "githubUrl",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "screenshots",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "videoExplanation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "textDescription",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "feedback",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "pointsScored",
+      "fieldType": "Integer"
+    }
+  ],
+  "name": "Submission",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "userAssessment",
+      "relationshipName": "forAssignment",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "assessment",
+      "relationshipName": "assessment",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

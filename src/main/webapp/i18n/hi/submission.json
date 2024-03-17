@@ -1,0 +1,32 @@
+{
+  "catApp": {
+    "submission": {
+      "home": {
+        "title": "Submissions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Submission बनाएँ",
+        "createOrEditLabel": "Submission बनाएँ या संपादित करें",
+        "notFound": "No Submissions found"
+      },
+      "created": "एक नया Submission [identifier: {{ param }}] तैयार है",
+      "updated": "एक Submission [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Submission [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Submission [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Submission"
+      },
+      "id": "ID",
+      "githubUrl": "Github Url",
+      "screenshots": "Screenshots",
+      "videoExplanation": "Video Explanation",
+      "textDescription": "Text Description",
+      "feedback": "Feedback",
+      "pointsScored": "Points Scored",
+      "forAssignment": "For Assignment",
+      "user": "User",
+      "assessment": "Assessment"
+    }
+  }
+}

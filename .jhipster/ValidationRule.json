@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20240317054945"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "entityTableName": "validation_rule",
+  "fields": [
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validationScript",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "ruleType",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "ValidationRule",
+  "relationships": [
+    {
+      "otherEntityName": "assessment",
+      "relationshipName": "assessment",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}
