@@ -1,0 +1,3 @@
+org.springframework.test.context.ContextCustomizerFactory = in.upcode.cat.\
+    config.TestContainersSpringContextCustomizerFactory,in.upcode.cat.config.\
+    RedisTestContainersSpringContextCustomizerFactory
