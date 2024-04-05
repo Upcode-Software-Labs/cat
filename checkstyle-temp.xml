@@ -6,10 +6,15 @@
     <!-- Configure checker to use UTF-8 encoding -->
     <property name="charset" value="UTF-8"/>
     <!-- Configure checker to run on files with these extensions -->
-    <property name="fileExtensions" value=""/>
-    <!-- For detailed checkstyle configuration, see https://github.com/spring-io/nohttp/tree/master/nohttp-checkstyle -->
-<!--    <module name="io.spring.nohttp.checkstyle.check.NoHttpCheck">-->
-<!--    </module>-->
+    <property name="fileExtensions" value=".java"/>
+
+    <module name="TreeWalker">
+        <module name="JavadocMethod"/>
+        <module name="MethodName"/>
+        <module name="ParameterName"/>
+        <module name="LocalVariableName"/>
+        <!-- Add more modules as needed -->
+    </module>
     <!-- Allow suppression with comments
        // CHECKSTYLE:OFF
        ... ignored content ...

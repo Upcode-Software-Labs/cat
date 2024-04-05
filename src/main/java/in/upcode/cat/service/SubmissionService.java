@@ -1,9 +1,19 @@
 package in.upcode.cat.service;
 
+import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.FileSetCheck;
 import in.upcode.cat.domain.Submission;
 import in.upcode.cat.repository.SubmissionRepository;
 import in.upcode.cat.service.dto.SubmissionDTO;
 import in.upcode.cat.service.mapper.SubmissionMapper;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +49,47 @@ public class SubmissionService {
         Submission submission = submissionMapper.toEntity(submissionDTO);
         submission = submissionRepository.save(submission);
         return submissionMapper.toDto(submission);
+    }
+
+    /**
+     * Save a submission.
+     *
+     * @param submissionDTO the entity to save.
+     * @return the persisted entity.
+     */
+    public SubmissionDTO saveSubmit(SubmissionDTO submissionDTO)
+        throws URISyntaxException, IOException, InterruptedException, CheckstyleException {
+        log.debug("Request to save Submission : {}", submissionDTO);
+
+        String githubUrl = submissionDTO.getGithubUrl();
+
+        // Remove "/blob/"
+        String rawUrl = githubUrl.replace("/blob/", "/");
+
+        // Replace "github.com" with "raw.githubusercontent.com"
+        rawUrl = rawUrl.replace("github.com", "raw.githubusercontent.com");
+
+        String rawContent = SubmissionSubmitService.getRawContent(rawUrl);
+
+        log.debug("File contents : {}", rawContent);
+
+        // Display the result using logger.debug
+        log.debug("####Checkstyle Result: {}", SubmissionSubmitService.codeCheck(rawContent));
+        submissionDTO.setResults(SubmissionSubmitService.codeCheck(rawContent));
+
+        Submission submission = submissionMapper.toEntity(submissionDTO);
+        submission = submissionRepository.save(submission);
+        return submissionMapper.toDto(submission);
+    }
+
+    private static File createTempFile(String content) throws IOException {
+        File tempFile = File.createTempFile("tempJavaFile", ".java");
+
+        try (FileWriter writer = new FileWriter(tempFile)) {
+            writer.write(content);
+        }
+
+        return tempFile;
     }
 
     /**

@@ -204,6 +204,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
     implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation 'com.puppycrawl.tools:checkstyle:10.14.1'
+    implementation 'com.google.guava:guava:30.1-jre'
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-test"
     testImplementation "org.springframework.security:spring-security-test"
@@ -219,6 +221,10 @@ dependencies {
     implementation "io.dropwizard.metrics:metrics-core"
     testImplementation "io.gatling.highcharts:gatling-charts-highcharts:${gatlingVersion}"
     // jhipster-needle-gradle-dependency - JHipster will add additional dependencies here
+}
+
+configurations {
+    all*.exclude group: 'com.google.guava', module: 'guava'
 }
 
 if (project.hasProperty("gae")) {

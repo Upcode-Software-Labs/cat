@@ -106,6 +106,11 @@ class SubmissionResourceIT {
     }
 
     @Test
+    void example() {
+        System.out.println("test");
+    }
+
+    @Test
     void createSubmission() throws Exception {
         int databaseSizeBeforeCreate = submissionRepository.findAll().size();
         // Create the Submission
