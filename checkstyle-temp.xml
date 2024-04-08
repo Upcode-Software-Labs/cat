@@ -6,7 +6,7 @@
     <!-- Configure checker to use UTF-8 encoding -->
     <property name="charset" value="UTF-8"/>
     <!-- Configure checker to run on files with these extensions -->
-    <property name="fileExtensions" value=".java"/>
+    <property name="fileExtensions" value="java"/>
 
     <module name="TreeWalker">
         <module name="JavadocMethod"/>

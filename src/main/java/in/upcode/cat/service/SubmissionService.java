@@ -13,8 +13,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.kohsuke.github.GHContent;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -82,14 +86,54 @@ public class SubmissionService {
         return submissionMapper.toDto(submission);
     }
 
-    private static File createTempFile(String content) throws IOException {
-        File tempFile = File.createTempFile("tempJavaFile", ".java");
+    /**
+     * Save a submission.
+     *
+     * @param submissionDTO the entity to save.
+     * @return the persisted entity.
+     */
+    public SubmissionDTO checkQuality(SubmissionDTO submissionDTO) throws Exception {
+        log.debug("Request to save Submission afet code Quality check : {}", submissionDTO);
 
-        try (FileWriter writer = new FileWriter(tempFile)) {
-            writer.write(content);
+        final String githubUrl = submissionDTO.getGithubUrl();
+
+        //connect to github
+        GitHub gitHub = GitHub.connectAnonymously();
+
+        final String[] parts = SubmissionSubmitService.extractUsernameAndRepo(githubUrl);
+
+        //get the public repo
+        GHRepository repo = gitHub.getRepository(parts[0] + "/" + parts[1]);
+
+        // List all files in the repository
+        List<GHContent> contents = repo.getDirectoryContent("");
+
+        final List<String> results = new ArrayList<>(); // Initialize an empty list to hold the results
+
+        // Perform Checkstyle analysis for each file
+        for (GHContent content : contents) {
+            if (!content.isDirectory() && content.getName().endsWith(".java")) {
+                final String fileName = content.getName();
+                final String fileContent = content.getContent();
+
+                log.debug("List of Files {}", fileName);
+
+                // Perform Checkstyle analysis for the file
+                final String report = SubmissionSubmitService.analyzeJavaFile(fileName, fileContent);
+
+                // Append the result to the list
+                results.add(fileName + ": " + report);
+
+                // Print quality report
+                log.info("Quality Report for: {}", fileName);
+                log.info(results.toString());
+            }
+            submissionDTO.setResults(results.toString());
         }
 
-        return tempFile;
+        Submission submission = submissionMapper.toEntity(submissionDTO);
+        submission = submissionRepository.save(submission);
+        return submissionMapper.toDto(submission);
     }
 
     /**
