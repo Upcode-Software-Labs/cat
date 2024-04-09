@@ -1,11 +1,13 @@
 package in.upcode.cat.web.rest;
 
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import in.upcode.cat.repository.SubmissionRepository;
 import in.upcode.cat.service.SubmissionService;
 import in.upcode.cat.service.dto.SubmissionDTO;
 import in.upcode.cat.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -61,6 +63,47 @@ public class SubmissionResource {
             throw new BadRequestAlertException("A new submission cannot already have an ID", ENTITY_NAME, "idexists");
         }
         SubmissionDTO result = submissionService.save(submissionDTO);
+        return ResponseEntity
+            .created(new URI("/api/submissions/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
+    }
+
+    /**
+     * {@code POST  /submissions/submit} : Create a new submission.
+     *
+     * @param submissionDTO the submissionDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new submissionDTO, or with status {@code 400 (Bad Request)} if the submission has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/submit")
+    public ResponseEntity<SubmissionDTO> createSubmissionSubmit(@Valid @RequestBody SubmissionDTO submissionDTO)
+        throws URISyntaxException, IOException, InterruptedException, CheckstyleException {
+        log.debug("REST request to save Submission : {}", submissionDTO);
+        if (submissionDTO.getId() != null) {
+            throw new BadRequestAlertException("A new submission cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        final SubmissionDTO result = submissionService.saveSubmit(submissionDTO);
+        return ResponseEntity
+            .created(new URI("/api/submissions/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
+            .body(result);
+    }
+
+    /**
+     * {@code POST  /submissions/submit} : Create a new submission.
+     *
+     * @param submissionDTO the submissionDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new submissionDTO, or with status {@code 400 (Bad Request)} if the submission has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/check")
+    public ResponseEntity<SubmissionDTO> createSubmissionGithubRepo(@Valid @RequestBody SubmissionDTO submissionDTO) throws Exception {
+        log.debug("REST request to check Quality Submission : {}", submissionDTO);
+        if (submissionDTO.getId() != null) {
+            throw new BadRequestAlertException("A new submission cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        final SubmissionDTO result = submissionService.checkQuality(submissionDTO);
         return ResponseEntity
             .created(new URI("/api/submissions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
