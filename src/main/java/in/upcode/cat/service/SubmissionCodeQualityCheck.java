@@ -2,8 +2,6 @@ package in.upcode.cat.service;
 
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
-import com.puppycrawl.tools.checkstyle.DefaultLogger;
-import com.puppycrawl.tools.checkstyle.LocalizedMessage;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import java.io.*;
@@ -13,15 +11,13 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SubmissionSubmitService {
+public class SubmissionCodeQualityCheck {
 
-    public static final Logger log = LoggerFactory.getLogger(SubmissionSubmitService.class);
+    private static final Logger log = LoggerFactory.getLogger(SubmissionCodeQualityCheck.class);
 
     public static String getRawContent(String rawUrl) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder().uri(new URI(rawUrl)).GET().build();
@@ -36,7 +32,7 @@ public class SubmissionSubmitService {
         }
     }
 
-    public static String codeCheck(String javaCode) throws CheckstyleException, IOException {
+    public static String codeCheck(String fileName, String javaCode) throws CheckstyleException, IOException {
         // Create a Checkstyle Checker
         Checker checker = new Checker();
         // Load Checkstyle configuration
@@ -45,7 +41,7 @@ public class SubmissionSubmitService {
         checker.configure(config);
 
         // Write file contents to a temporary file
-        File tempFile = createTempFile("temp", javaCode);
+        File tempFile = createTempFile(fileName, javaCode);
 
         List<File> fileList = List.of(tempFile);
 

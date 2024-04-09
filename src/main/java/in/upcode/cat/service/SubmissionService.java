@@ -73,13 +73,17 @@ public class SubmissionService {
         // Replace "github.com" with "raw.githubusercontent.com"
         rawUrl = rawUrl.replace("github.com", "raw.githubusercontent.com");
 
-        String rawContent = SubmissionSubmitService.getRawContent(rawUrl);
+        String rawContent = SubmissionCodeQualityCheck.getRawContent(rawUrl);
+
+        final String[] parts = rawContent.split("/");
+
+        final String fileName = parts[parts.length - 1];
 
         log.debug("File contents : {}", rawContent);
 
         // Display the result using logger.debug
-        log.debug("####Checkstyle Result: {}", SubmissionSubmitService.codeCheck(rawContent));
-        submissionDTO.setResults(SubmissionSubmitService.codeCheck(rawContent));
+        log.debug("####Checkstyle Result: {}", SubmissionCodeQualityCheck.codeCheck(fileName, rawContent));
+        submissionDTO.setResults(SubmissionCodeQualityCheck.codeCheck(fileName, rawContent));
 
         Submission submission = submissionMapper.toEntity(submissionDTO);
         submission = submissionRepository.save(submission);
@@ -100,7 +104,7 @@ public class SubmissionService {
         //connect to github
         GitHub gitHub = GitHub.connectAnonymously();
 
-        final String[] parts = SubmissionSubmitService.extractUsernameAndRepo(githubUrl);
+        final String[] parts = SubmissionCodeQualityCheck.extractUsernameAndRepo(githubUrl);
 
         //get the public repo
         GHRepository repo = gitHub.getRepository(parts[0] + "/" + parts[1]);
@@ -119,7 +123,7 @@ public class SubmissionService {
                 log.debug("List of Files {}", fileName);
 
                 // Perform Checkstyle analysis for the file
-                final String report = SubmissionSubmitService.analyzeJavaFile(fileName, fileContent);
+                final String report = SubmissionCodeQualityCheck.analyzeJavaFile(fileName, fileContent);
 
                 // Append the result to the list
                 results.add(fileName + ": " + report);

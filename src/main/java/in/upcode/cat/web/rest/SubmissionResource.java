@@ -83,7 +83,7 @@ public class SubmissionResource {
         if (submissionDTO.getId() != null) {
             throw new BadRequestAlertException("A new submission cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SubmissionDTO result = submissionService.saveSubmit(submissionDTO);
+        final SubmissionDTO result = submissionService.saveSubmit(submissionDTO);
         return ResponseEntity
             .created(new URI("/api/submissions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -103,7 +103,7 @@ public class SubmissionResource {
         if (submissionDTO.getId() != null) {
             throw new BadRequestAlertException("A new submission cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SubmissionDTO result = submissionService.checkQuality(submissionDTO);
+        final SubmissionDTO result = submissionService.checkQuality(submissionDTO);
         return ResponseEntity
             .created(new URI("/api/submissions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
