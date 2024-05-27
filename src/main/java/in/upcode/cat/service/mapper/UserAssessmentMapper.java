@@ -13,7 +13,7 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface UserAssessmentMapper extends EntityMapper<UserAssessmentDTO, UserAssessment> {
-    @Mapping(target = "submittedByUser", source = "submittedByUser", qualifiedByName = "userId")
+    //@Mapping(target = "submittedByUser", source = "submittedByUser", qualifiedByName = "userId")
     @Mapping(target = "user", source = "user", qualifiedByName = "userId")
     @Mapping(target = "assessment", source = "assessment", qualifiedByName = "assessmentId")
     UserAssessmentDTO toDto(UserAssessment s);

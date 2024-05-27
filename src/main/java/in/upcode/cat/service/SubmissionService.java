@@ -83,7 +83,7 @@ public class SubmissionService {
 
         // Display the result using logger.debug
         log.debug("####Checkstyle Result: {}", SubmissionCodeQualityCheck.codeCheck(fileName, rawContent));
-        submissionDTO.setResults(SubmissionCodeQualityCheck.codeCheck(fileName, rawContent));
+        // submissionDTO.setResults(SubmissionCodeQualityCheck.codeCheck(fileName, rawContent));
 
         Submission submission = submissionMapper.toEntity(submissionDTO);
         submission = submissionRepository.save(submission);
@@ -132,7 +132,7 @@ public class SubmissionService {
                 log.info("Quality Report for: {}", fileName);
                 log.info(results.toString());
             }
-            submissionDTO.setResults(results.toString());
+            // submissionDTO.setResults(results.toString());
         }
 
         Submission submission = submissionMapper.toEntity(submissionDTO);
@@ -182,6 +182,47 @@ public class SubmissionService {
     public Page<SubmissionDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Submissions");
         return submissionRepository.findAll(pageable).map(submissionMapper::toDto);
+    }
+
+    /**
+     * Get the submissions based on search.
+     *
+     * @param pageable the pagination information.
+     * @param type the name of student
+
+     * @return the list of entities.
+     */
+    public Page<SubmissionDTO> findByAssessmentId(String type, Pageable pageable) {
+        return submissionRepository.findByAssessment_Id(type, pageable).map(submissionMapper::toDto);
+    }
+
+    /**
+     * Get the submissions based on search.
+     *
+     * @param pageable the pagination information.
+     * @param user the name of student
+
+     * @return the list of entities.
+     */
+
+    public Page<SubmissionDTO> findByUserId(String user, Pageable pageable) {
+        return submissionRepository.findByUser_Id(user, pageable).map(submissionMapper::toDto);
+    }
+
+    public Page<SubmissionDTO> findByUserIdAndAssessmentId(String userId, String assessmentId, Pageable pageable) {
+        return submissionRepository.findByUserIdAndAssessmentId(userId, assessmentId, pageable).map(submissionMapper::toDto);
+    }
+
+    /**
+     * Get the submissions based on search.
+     *
+     * @param pageable the pagination information.
+     * @param status the name of student
+
+     * @return the list of entities.
+     */
+    public Page<SubmissionDTO> findByForAssessmentId(String status, Pageable pageable) {
+        return submissionRepository.findByForAssignment_Id(status, pageable);
     }
 
     /**

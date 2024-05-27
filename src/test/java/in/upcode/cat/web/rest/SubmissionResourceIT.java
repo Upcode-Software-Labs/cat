@@ -78,6 +78,7 @@ class SubmissionResourceIT {
             .textDescription(DEFAULT_TEXT_DESCRIPTION)
             .feedback(DEFAULT_FEEDBACK)
             .pointsScored(DEFAULT_POINTS_SCORED);
+
         return submission;
     }
 

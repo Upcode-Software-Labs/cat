@@ -86,6 +86,18 @@ public class UserAssessmentService {
     }
 
     /**
+     * Get all the userAssessments.
+     *
+     *  @param status the pagination information.
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    public Page<UserAssessmentDTO> findBySearch(String status, Pageable pageable) {
+        log.debug("Request to get UserAssessments based on status");
+        return userAssessmentRepository.findByStatus(status, pageable).map(userAssessmentMapper::toDto);
+    }
+
+    /**
      * Get one userAssessment by id.
      *
      * @param id the id of the entity.

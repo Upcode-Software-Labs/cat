@@ -86,6 +86,17 @@ public class AssessmentService {
     }
 
     /**
+     * Retrieve assessments by type.
+     *
+     * @param type     the type of assessment to search for.
+     * @param pageable the pagination information.
+     * @return a page of assessments with the specified type.
+     */
+    public Page<AssessmentDTO> findAssessmentsByType(String type, Pageable pageable) {
+        return assessmentRepository.findByTypeRegexIgnoreCase(type, pageable).map(assessmentMapper::toDto);
+    }
+
+    /**
      * Get one assessment by id.
      *
      * @param id the id of the entity.

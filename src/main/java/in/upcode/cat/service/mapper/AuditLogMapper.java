@@ -17,5 +17,6 @@ public interface AuditLogMapper extends EntityMapper<AuditLogDTO, AuditLog> {
     @Named("userId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "login", source = "login")
     UserDTO toDtoUserId(User user);
 }

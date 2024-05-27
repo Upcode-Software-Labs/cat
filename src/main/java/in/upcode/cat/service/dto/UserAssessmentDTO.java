@@ -22,7 +22,7 @@ public class UserAssessmentDTO implements Serializable {
 
     private Instant deadline;
 
-    private UserDTO submittedByUser;
+    //private UserDTO submittedByUser;
 
     private UserDTO user;
 
@@ -60,13 +60,13 @@ public class UserAssessmentDTO implements Serializable {
         this.deadline = deadline;
     }
 
-    public UserDTO getSubmittedByUser() {
-        return submittedByUser;
-    }
-
-    public void setSubmittedByUser(UserDTO submittedByUser) {
-        this.submittedByUser = submittedByUser;
-    }
+    //    public UserDTO getSubmittedByUser() {
+    //        return submittedByUser;
+    //    }
+    //
+    //    public void setSubmittedByUser(UserDTO submittedByUser) {
+    //        this.submittedByUser = submittedByUser;
+    //    }
 
     public UserDTO getUser() {
         return user;
@@ -113,7 +113,7 @@ public class UserAssessmentDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", assignedAt='" + getAssignedAt() + "'" +
             ", deadline='" + getDeadline() + "'" +
-            ", submittedByUser=" + getSubmittedByUser() +
+            //", submittedByUser=" + getSubmittedByUser() +
             ", user=" + getUser() +
             ", assessment=" + getAssessment() +
             "}";

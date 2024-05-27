@@ -154,6 +154,16 @@ public class UserAssessmentResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<UserAssessmentDTO>> getUserAssessmentBySearch(
+        @RequestParam String status,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        Page<UserAssessmentDTO> page = userAssessmentService.findBySearch(status, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
     /**
      * {@code GET  /user-assessments/:id} : get the "id" userAssessment.
      *

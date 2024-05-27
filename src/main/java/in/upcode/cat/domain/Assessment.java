@@ -38,7 +38,7 @@ public class Assessment implements Serializable {
 
     @NotNull
     @Field("type")
-    private String type;
+    private String type; //create category table
 
     @NotNull
     @Field("validation_criteria")
@@ -56,9 +56,9 @@ public class Assessment implements Serializable {
     @Field("deadline")
     private ZonedDateTime deadline;
 
-    @DBRef
-    @Field("assignedToUser")
-    private User assignedToUser;
+    //    @DBRef
+    //    @Field("assignedToUser")
+    //    private User assignedToUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -205,18 +205,18 @@ public class Assessment implements Serializable {
         this.deadline = deadline;
     }
 
-    public User getAssignedToUser() {
-        return this.assignedToUser;
-    }
+    //    public User getAssignedToUser() {
+    //        return this.assignedToUser;
+    //    }
+    //
+    //    public void setAssignedToUser(User user) {
+    //        this.assignedToUser = user;
+    //    }
 
-    public void setAssignedToUser(User user) {
-        this.assignedToUser = user;
-    }
-
-    public Assessment assignedToUser(User user) {
-        this.setAssignedToUser(user);
-        return this;
-    }
+    //    public Assessment assignedToUser(User user) {
+    //        this.setAssignedToUser(user);
+    //        return this;
+    //    }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

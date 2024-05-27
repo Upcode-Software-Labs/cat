@@ -17,5 +17,9 @@ public interface QuestionMapper extends EntityMapper<QuestionDTO, Question> {
     @Named("assessmentId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "question", source = "question")
+    @Mapping(target = "deadline", source = "deadline")
     AssessmentDTO toDtoAssessmentId(Assessment assessment);
 }

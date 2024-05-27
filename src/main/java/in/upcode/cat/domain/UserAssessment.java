@@ -33,9 +33,9 @@ public class UserAssessment implements Serializable {
     @Field("deadline")
     private Instant deadline;
 
-    @DBRef
-    @Field("submittedByUser")
-    private User submittedByUser;
+    //    @DBRef
+    //    @Field("submittedByUser")
+    //    private User submittedByUser;
 
     @DBRef
     @Field("user")
@@ -100,18 +100,18 @@ public class UserAssessment implements Serializable {
         this.deadline = deadline;
     }
 
-    public User getSubmittedByUser() {
-        return this.submittedByUser;
-    }
-
-    public void setSubmittedByUser(User user) {
-        this.submittedByUser = user;
-    }
-
-    public UserAssessment submittedByUser(User user) {
-        this.setSubmittedByUser(user);
-        return this;
-    }
+    //    public User getSubmittedByUser() {
+    //        return this.submittedByUser;
+    //    }
+    //
+    //    public void setSubmittedByUser(User user) {
+    //        this.submittedByUser = user;
+    //    }
+    //
+    //    public UserAssessment submittedByUser(User user) {
+    //        this.setSubmittedByUser(user);
+    //        return this;
+    //    }
 
     public User getUser() {
         return this.user;

@@ -144,10 +144,20 @@ public class AssessmentResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of assessments in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<AssessmentDTO>> getAllAssessments(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<AssessmentDTO>> getAllAssessments(
+        @RequestParam(required = false) String type,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
         log.debug("REST request to get a page of Assessments");
-        Page<AssessmentDTO> page = assessmentService.findAll(pageable);
+        final Page<AssessmentDTO> page;
+        if (type == null) {
+            page = assessmentService.findAll(pageable);
+        } else {
+            page = assessmentService.findAssessmentsByType(type, pageable);
+        }
+
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 

@@ -1,5 +1,6 @@
 package in.upcode.cat.service.dto;
 
+import in.upcode.cat.domain.Assessment;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -39,7 +40,7 @@ public class AssessmentDTO implements Serializable {
     @NotNull
     private ZonedDateTime deadline;
 
-    private UserDTO assignedToUser;
+    //    private UserDTO assignedToUser;
 
     public String getId() {
         return id;
@@ -129,13 +130,13 @@ public class AssessmentDTO implements Serializable {
         this.deadline = deadline;
     }
 
-    public UserDTO getAssignedToUser() {
-        return assignedToUser;
-    }
-
-    public void setAssignedToUser(UserDTO assignedToUser) {
-        this.assignedToUser = assignedToUser;
-    }
+    //    public UserDTO getAssignedToUser() {
+    //        return assignedToUser;
+    //    }
+    //
+    //    public void setAssignedToUser(UserDTO assignedToUser) {
+    //        this.assignedToUser = assignedToUser;
+    //    }
 
     @Override
     public boolean equals(Object o) {
@@ -173,7 +174,24 @@ public class AssessmentDTO implements Serializable {
             ", question='" + getQuestion() + "'" +
             ", maxPoints=" + getMaxPoints() +
             ", deadline='" + getDeadline() + "'" +
-            ", assignedToUser=" + getAssignedToUser() +
+//            ", assignedToUser=" + getAssignedToUser() +
             "}";
+    }
+
+    public Assessment toEntity() {
+        Assessment assessment = new Assessment();
+        assessment.setId(id);
+        assessment.setTitle(title);
+        assessment.setDescription(description);
+        assessment.setLanguageFramework(languageFramework);
+        assessment.setDifficultyLevel(difficultyLevel);
+        assessment.setTimeLimit(timeLimit);
+        assessment.setType(type);
+        assessment.setValidationCriteria(validationCriteria);
+        assessment.setQuestion(question);
+        assessment.setMaxPoints(maxPoints);
+        assessment.setDeadline(deadline);
+
+        return assessment;
     }
 }

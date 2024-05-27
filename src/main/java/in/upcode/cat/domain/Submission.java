@@ -42,8 +42,8 @@ public class Submission implements Serializable {
     @Field("points_scored")
     private Integer pointsScored;
 
-    @Field
-    private String results;
+    //    @Field
+    //    private String results;
 
     @DBRef
     @Field("forAssignment")
@@ -178,6 +178,11 @@ public class Submission implements Serializable {
         return this;
     }
 
+    //    public Submission results(String result){
+    //        this.setResults(results);
+    //        return this;
+    //    }
+
     public User getUser() {
         return this.user;
     }
@@ -204,13 +209,13 @@ public class Submission implements Serializable {
         return this;
     }
 
-    public String getResults() {
-        return results;
-    }
-
-    public void setResults(String results) {
-        this.results = results;
-    }
+    //    public String getResults() {
+    //        return results;
+    //    }
+    //
+    //    public void setResults(String results) {
+    //        this.results = results;
+    //    }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

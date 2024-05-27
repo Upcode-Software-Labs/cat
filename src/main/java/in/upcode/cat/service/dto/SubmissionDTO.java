@@ -32,7 +32,7 @@ public class SubmissionDTO implements Serializable {
 
     private AssessmentDTO assessment;
 
-    private String results;
+    //private String results;
 
     public String getId() {
         return id;
@@ -122,13 +122,13 @@ public class SubmissionDTO implements Serializable {
         this.assessment = assessment;
     }
 
-    public String getResults() {
-        return results;
-    }
-
-    public void setResults(String results) {
-        this.results = results;
-    }
+    //    public String getResults() {
+    //        return results;
+    //    }
+    //
+    //    public void setResults(String results) {
+    //        this.results = results;
+    //    }
 
     @Override
     public boolean equals(Object o) {
@@ -165,7 +165,7 @@ public class SubmissionDTO implements Serializable {
             ", forAssignment=" + getForAssignment() +
             ", user=" + getUser() +
             ", assessment=" + getAssessment() +
-            ", results=" + getResults() +
+         //   ", results=" + getResults() +
             "}";
     }
 }
