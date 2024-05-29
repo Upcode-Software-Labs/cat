@@ -3,6 +3,7 @@ package in.upcode.cat.domain;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import org.springframework.data.annotation.Id;
@@ -42,7 +43,7 @@ public class Assignment extends AbstractAuditingEntity<String> implements Serial
     private String difficultyLevel;
 
     @Field("time_limit")
-    private Integer timeLimit;
+    private LocalTime timeLimit;
 
     @NotNull
     @DBRef
@@ -157,16 +158,16 @@ public class Assignment extends AbstractAuditingEntity<String> implements Serial
         this.difficultyLevel = difficultyLevel;
     }
 
-    public Integer getTimeLimit() {
+    public LocalTime getTimeLimit() {
         return this.timeLimit;
     }
 
-    public Assignment timeLimit(Integer timeLimit) {
+    public Assignment timeLimit(LocalTime timeLimit) {
         this.setTimeLimit(timeLimit);
         return this;
     }
 
-    public void setTimeLimit(Integer timeLimit) {
+    public void setTimeLimit(LocalTime timeLimit) {
         this.timeLimit = timeLimit;
     }
 

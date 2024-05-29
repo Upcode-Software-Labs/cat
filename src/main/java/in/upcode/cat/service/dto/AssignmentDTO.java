@@ -5,6 +5,7 @@ import in.upcode.cat.domain.Category;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -23,7 +24,7 @@ public class AssignmentDTO implements Serializable {
 
     private String difficultyLevel;
 
-    private Integer timeLimit;
+    private LocalTime timeLimit;
 
     @NotNull
     private CategoryDTO type;
@@ -70,11 +71,11 @@ public class AssignmentDTO implements Serializable {
         this.difficultyLevel = difficultyLevel;
     }
 
-    public Integer getTimeLimit() {
+    public LocalTime getTimeLimit() {
         return timeLimit;
     }
 
-    public void setTimeLimit(Integer timeLimit) {
+    public void setTimeLimit(LocalTime timeLimit) {
         this.timeLimit = timeLimit;
     }
 
