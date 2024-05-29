@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk, isFulfilled, isPending } from '@reduxjs/toolkit';
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
-import { IUserAssessment, defaultValue } from 'app/shared/model/user-assessment.model';
+import { IUserAssessment, defaultValue } from 'app/shared/model/user-assignment.model';
 
 const initialState: EntityState<IUserAssessment> = {
   loading: false,
@@ -18,13 +18,13 @@ const apiUrl = 'api/user-assessments';
 
 // Actions
 
-export const getEntities = createAsyncThunk('userAssessment/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
+export const getEntities = createAsyncThunk('userAssignment/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
   const requestUrl = `${apiUrl}?${sort ? `page=${page}&size=${size}&sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
   return axios.get<IUserAssessment[]>(requestUrl);
 });
 
 export const getEntity = createAsyncThunk(
-  'userAssessment/fetch_entity',
+  'userAssignment/fetch_entity',
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
     return axios.get<IUserAssessment>(requestUrl);
@@ -33,7 +33,7 @@ export const getEntity = createAsyncThunk(
 );
 
 export const createEntity = createAsyncThunk(
-  'userAssessment/create_entity',
+  'userAssignment/create_entity',
   async (entity: IUserAssessment, thunkAPI) => {
     const result = await axios.post<IUserAssessment>(apiUrl, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
@@ -43,7 +43,7 @@ export const createEntity = createAsyncThunk(
 );
 
 export const updateEntity = createAsyncThunk(
-  'userAssessment/update_entity',
+  'userAssignment/update_entity',
   async (entity: IUserAssessment, thunkAPI) => {
     const result = await axios.put<IUserAssessment>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
@@ -53,7 +53,7 @@ export const updateEntity = createAsyncThunk(
 );
 
 export const partialUpdateEntity = createAsyncThunk(
-  'userAssessment/partial_update_entity',
+  'userAssignment/partial_update_entity',
   async (entity: IUserAssessment, thunkAPI) => {
     const result = await axios.patch<IUserAssessment>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
@@ -63,7 +63,7 @@ export const partialUpdateEntity = createAsyncThunk(
 );
 
 export const deleteEntity = createAsyncThunk(
-  'userAssessment/delete_entity',
+  'userAssignment/delete_entity',
   async (id: string | number, thunkAPI) => {
     const requestUrl = `${apiUrl}/${id}`;
     const result = await axios.delete<IUserAssessment>(requestUrl);
@@ -76,7 +76,7 @@ export const deleteEntity = createAsyncThunk(
 // slice
 
 export const UserAssessmentSlice = createEntitySlice({
-  name: 'userAssessment',
+  name: 'userAssignment',
   initialState,
   extraReducers(builder) {
     builder

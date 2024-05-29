@@ -13,12 +13,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SubmissionRepository extends MongoRepository<Submission, String> {
-    Page<Submission> findByAssessment_Id(String id, Pageable pageable);
-
-    Page<Submission> findByUser_Id(String userId, Pageable pageable);
-
-    Page<SubmissionDTO> findByForAssignment_Id(String id, Pageable pageable);
-
-    Page<Submission> findByUserIdAndAssessmentId(String userId, String assessmentId, Pageable pageable);
-}
+public interface SubmissionRepository extends MongoRepository<Submission, String> {}

@@ -1,22 +1,15 @@
 package in.upcode.cat.web.rest;
 
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import in.upcode.cat.domain.Assessment;
-import in.upcode.cat.domain.Submission;
+import in.upcode.cat.domain.Assignment;
 import in.upcode.cat.domain.User;
-import in.upcode.cat.domain.UserAssessment;
-import in.upcode.cat.repository.AssessmentRepository;
+import in.upcode.cat.repository.AssignmentRepository;
 import in.upcode.cat.repository.SubmissionRepository;
-import in.upcode.cat.repository.UserAssessmentRepository;
 import in.upcode.cat.repository.UserRepository;
 import in.upcode.cat.service.SubmissionService;
-import in.upcode.cat.service.UserService;
 import in.upcode.cat.service.dto.SubmissionDTO;
-import in.upcode.cat.service.dto.UserDTO;
 import in.upcode.cat.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -29,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +50,7 @@ public class SubmissionResource {
     UserRepository userRepository;
 
     @Autowired
-    AssessmentRepository assessmentRepository;
+    AssignmentRepository assignmentRepository;
 
     @Autowired
     SubmissionRepository submissionRepository;
@@ -68,12 +59,12 @@ public class SubmissionResource {
         SubmissionService submissionService,
         SubmissionRepository submissionRepository,
         UserRepository userRepository,
-        AssessmentRepository assessmentRepository
+        AssignmentRepository assignmentRepository
     ) {
         this.submissionService = submissionService;
         this.submissionRepository = submissionRepository;
         this.userRepository = userRepository;
-        this.assessmentRepository = assessmentRepository;
+        this.assignmentRepository = assignmentRepository;
     }
 
     /**
@@ -90,47 +81,6 @@ public class SubmissionResource {
             throw new BadRequestAlertException("A new submission cannot already have an ID", ENTITY_NAME, "idexists");
         }
         SubmissionDTO result = submissionService.save(submissionDTO);
-        return ResponseEntity
-            .created(new URI("/api/submissions/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
-            .body(result);
-    }
-
-    /**
-     * {@code POST  /submissions/submit} : Create a new submission.
-     *
-     * @param submissionDTO the submissionDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new submissionDTO, or with status {@code 400 (Bad Request)} if the submission has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/submit")
-    public ResponseEntity<SubmissionDTO> createSubmissionSubmit(@Valid @RequestBody SubmissionDTO submissionDTO)
-        throws URISyntaxException, IOException, InterruptedException, CheckstyleException {
-        log.debug("REST request to save Submission : {}", submissionDTO);
-        if (submissionDTO.getId() != null) {
-            throw new BadRequestAlertException("A new submission cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        final SubmissionDTO result = submissionService.saveSubmit(submissionDTO);
-        return ResponseEntity
-            .created(new URI("/api/submissions/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
-            .body(result);
-    }
-
-    /**
-     * {@code POST  /submissions/submit} : Create a new submission.
-     *
-     * @param submissionDTO the submissionDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new submissionDTO, or with status {@code 400 (Bad Request)} if the submission has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/check")
-    public ResponseEntity<SubmissionDTO> createSubmissionGithubRepo(@Valid @RequestBody SubmissionDTO submissionDTO) throws Exception {
-        log.debug("REST request to check Quality Submission : {}", submissionDTO);
-        if (submissionDTO.getId() != null) {
-            throw new BadRequestAlertException("A new submission cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        final SubmissionDTO result = submissionService.checkQuality(submissionDTO);
         return ResponseEntity
             .created(new URI("/api/submissions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -215,55 +165,55 @@ public class SubmissionResource {
      * @param type the assessment type
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of submissions in body.
      */
-    @GetMapping("")
-    public ResponseEntity<List<SubmissionDTO>> getAllSubmissions(
-        @RequestParam(required = false) String user,
-        @RequestParam(required = false) String type,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get a page of Submissions based on search");
-
-        Page<SubmissionDTO> page;
-        HttpHeaders headers;
-
-        if (user != null && type != null) {
-            // Case: Both user and type parameters are provided
-            Optional<User> userOptional = userRepository.findOneByLoginRegexIgnoreCase(user);
-            Optional<Assessment> assessmentOptional = assessmentRepository.findByTypeRegexIgnoreCase(type);
-
-            if (userOptional.isPresent() && assessmentOptional.isPresent()) {
-                String userId = userOptional.get().getId();
-                String assessmentId = assessmentOptional.get().getId();
-                page = submissionService.findByUserIdAndAssessmentId(userId, assessmentId, pageable);
-            } else {
-                // If either user or assessment is not found, return an empty list
-                return ResponseEntity.ok().body(Collections.emptyList());
-            }
-        } else if (user != null) {
-            // Case: Only user parameter is provided
-            Optional<User> userOptional = userRepository.findOneByLoginRegexIgnoreCase(user);
-            if (userOptional.isPresent()) {
-                String userId = userOptional.get().getId();
-                page = submissionService.findByUserId(userId, pageable);
-            } else {
-                return ResponseEntity.ok().body(Collections.emptyList());
-            }
-        } else if (type != null) {
-            // Case: Only type parameter is provided
-            Optional<Assessment> assessmentOptional = assessmentRepository.findByTypeRegexIgnoreCase(type);
-            if (assessmentOptional.isPresent()) {
-                String assessmentId = assessmentOptional.get().getId();
-                page = submissionService.findByAssessmentId(assessmentId, pageable);
-            } else {
-                return ResponseEntity.ok().body(Collections.emptyList());
-            }
-        } else {
-            // Case: No parameters provided, return all submissions
-            page = submissionService.findAll(pageable);
-        }
-        headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+    //    @GetMapping("")
+    //    public ResponseEntity<List<SubmissionDTO>> getAllSubmissions(
+    //        @RequestParam(required = false) String user,
+    //        @RequestParam(required = false) String type,
+    //        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    //    ) {
+    //        log.debug("REST request to get a page of Submissions based on search");
+    //
+    //        Page<SubmissionDTO> page;
+    //        HttpHeaders headers;
+    //
+    //        if (user != null && type != null) {
+    //            // Case: Both user and type parameters are provided
+    //            Optional<User> userOptional = userRepository.findOneByLoginRegexIgnoreCase(user);
+    //            Optional<Assignment> assessmentOptional = assignmentRepository.findByTypeRegexIgnoreCase(type);
+    //
+    //            if (userOptional.isPresent() && assessmentOptional.isPresent()) {
+    //                String userId = userOptional.get().getId();
+    //                String assessmentId = assessmentOptional.get().getId();
+    //                page = submissionService.findByUserIdAndAssessmentId(userId, assessmentId, pageable);
+    //            } else {
+    //                // If either user or assessment is not found, return an empty list
+    //                return ResponseEntity.ok().body(Collections.emptyList());
+    //            }
+    //        } else if (user != null) {
+    //            // Case: Only user parameter is provided
+    //            Optional<User> userOptional = userRepository.findOneByLoginRegexIgnoreCase(user);
+    //            if (userOptional.isPresent()) {
+    //                String userId = userOptional.get().getId();
+    //                page = submissionService.findByUserId(userId, pageable);
+    //            } else {
+    //                return ResponseEntity.ok().body(Collections.emptyList());
+    //            }
+    //        } else if (type != null) {
+    //            // Case: Only type parameter is provided
+    //            Optional<Assignment> assessmentOptional = assignmentRepository.findByTypeRegexIgnoreCase(type);
+    //            if (assessmentOptional.isPresent()) {
+    //                String assessmentId = assessmentOptional.get().getId();
+    //                page = submissionService.findByAssignmentId(assessmentId, pageable);
+    //            } else {
+    //                return ResponseEntity.ok().body(Collections.emptyList());
+    //            }
+    //        } else {
+    //            // Case: No parameters provided, return all submissions
+    //            page = submissionService.findAll(pageable);
+    //        }
+    //        headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    //    }
 
     /**
      * {@code GET  /submissions/search} : get all the submissions.
@@ -271,50 +221,50 @@ public class SubmissionResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of submissions in body.
      */
-    @GetMapping("/search")
-    public ResponseEntity<List<SubmissionDTO>> getSubmissionsBySearch(
-        @RequestParam(required = false) String user,
-        @RequestParam(required = false) String type,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get a page of Submissions based on search");
-
-        final User userOptional;
-        final String userId;
-
-        final Assessment assessmentOptional;
-        final String assessmentId;
-
-        if (user != null) {
-            Optional<User> userName = userRepository.findOneByLoginRegexIgnoreCase(user);
-            if (userName.isPresent()) {
-                userOptional = userName.get();
-                userId = userOptional.getId();
-
-                Page<SubmissionDTO> page = submissionService.findByUserId(userId, pageable);
-                HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-                return ResponseEntity.ok().headers(headers).body(page.getContent());
-            } else {
-                return ResponseEntity.ok().body(Collections.emptyList());
-            }
-        } else if (type != null) {
-            //get the id of the assessment based on search
-            Optional<Assessment> assessmentName = assessmentRepository.findByTypeRegexIgnoreCase(type);
-            if (assessmentName.isPresent()) {
-                assessmentOptional = assessmentName.get();
-                assessmentId = assessmentOptional.getId();
-
-                Page<SubmissionDTO> page = submissionService.findByAssessmentId(assessmentId, pageable);
-                HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-                return ResponseEntity.ok().headers(headers).body(page.getContent());
-            } else {
-                return ResponseEntity.ok().body(Collections.emptyList());
-            }
-        } else {
-            // Return an empty list
-            return ResponseEntity.ok().body(Collections.emptyList());
-        }
-    }
+    //    @GetMapping("/search")
+    //    public ResponseEntity<List<SubmissionDTO>> getSubmissionsBySearch(
+    //        @RequestParam(required = false) String user,
+    //        @RequestParam(required = false) String type,
+    //        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    //    ) {
+    //        log.debug("REST request to get a page of Submissions based on search");
+    //
+    //        final User userOptional;
+    //        final String userId;
+    //
+    //        final Assignment assignmentOptional;
+    //        final String assessmentId;
+    //
+    //        if (user != null) {
+    //            Optional<User> userName = userRepository.findOneByLoginRegexIgnoreCase(user);
+    //            if (userName.isPresent()) {
+    //                userOptional = userName.get();
+    //                userId = userOptional.getId();
+    //
+    //                Page<SubmissionDTO> page = submissionService.findByUserId(userId, pageable);
+    //                HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //                return ResponseEntity.ok().headers(headers).body(page.getContent());
+    //            } else {
+    //                return ResponseEntity.ok().body(Collections.emptyList());
+    //            }
+    //        } else if (type != null) {
+    //            //get the id of the assessment based on search
+    //            Optional<Assignment> assessmentName = assignmentRepository.findByTypeRegexIgnoreCase(type);
+    //            if (assessmentName.isPresent()) {
+    //                assignmentOptional = assessmentName.get();
+    //                assessmentId = assignmentOptional.getId();
+    //
+    //                Page<SubmissionDTO> page = submissionService.findByAssignmentId(assessmentId, pageable);
+    //                HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //                return ResponseEntity.ok().headers(headers).body(page.getContent());
+    //            } else {
+    //                return ResponseEntity.ok().body(Collections.emptyList());
+    //            }
+    //        } else {
+    //            // Return an empty list
+    //            return ResponseEntity.ok().body(Collections.emptyList());
+    //        }
+    //    }
 
     /**
      * {@code GET  /submissions/:id} : get the "id" submission.

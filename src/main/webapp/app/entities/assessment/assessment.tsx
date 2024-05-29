@@ -9,7 +9,7 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.cons
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntities } from './assessment.reducer';
+import { getEntities } from './assignment.reducer';
 
 export const Assessment = () => {
   const dispatch = useAppDispatch();
@@ -21,9 +21,9 @@ export const Assessment = () => {
     overridePaginationStateWithQueryParams(getPaginationState(pageLocation, ITEMS_PER_PAGE, 'id'), pageLocation.search),
   );
 
-  const assessmentList = useAppSelector(state => state.assessment.entities);
-  const loading = useAppSelector(state => state.assessment.loading);
-  const totalItems = useAppSelector(state => state.assessment.totalItems);
+  const assignmentList = useAppSelector(state => state.assignment.entities);
+  const loading = useAppSelector(state => state.assignment.loading);
+  const totalItems = useAppSelector(state => state.assignment.totalItems);
 
   const getAllEntities = () => {
     dispatch(
@@ -92,95 +92,95 @@ export const Assessment = () => {
 
   return (
     <div>
-      <h2 id="assessment-heading" data-cy="AssessmentHeading">
-        <Translate contentKey="catApp.assessment.home.title">Assessments</Translate>
+      <h2 id="assignment-heading" data-cy="AssessmentHeading">
+        <Translate contentKey="catApp.assignment.home.title">Assessments</Translate>
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="catApp.assessment.home.refreshListLabel">Refresh List</Translate>
+            <Translate contentKey="catApp.assignment.home.refreshListLabel">Refresh List</Translate>
           </Button>
-          <Link to="/assessment/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+          <Link to="/assignment/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
             &nbsp;
-            <Translate contentKey="catApp.assessment.home.createLabel">Create new Assessment</Translate>
+            <Translate contentKey="catApp.assignment.home.createLabel">Create new Assessment</Translate>
           </Link>
         </div>
       </h2>
       <div className="table-responsive">
-        {assessmentList && assessmentList.length > 0 ? (
+        {assignmentList && assignmentList.length > 0 ? (
           <Table responsive>
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="catApp.assessment.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                  <Translate contentKey="catApp.assignment.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
                 <th className="hand" onClick={sort('title')}>
-                  <Translate contentKey="catApp.assessment.title">Title</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.title">Title</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('title')} />
                 </th>
                 <th className="hand" onClick={sort('description')}>
-                  <Translate contentKey="catApp.assessment.description">Description</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.description">Description</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('description')} />
                 </th>
                 <th className="hand" onClick={sort('languageFramework')}>
-                  <Translate contentKey="catApp.assessment.languageFramework">Language Framework</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.languageFramework">Language Framework</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('languageFramework')} />
                 </th>
                 <th className="hand" onClick={sort('difficultyLevel')}>
-                  <Translate contentKey="catApp.assessment.difficultyLevel">Difficulty Level</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.difficultyLevel">Difficulty Level</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('difficultyLevel')} />
                 </th>
                 <th className="hand" onClick={sort('timeLimit')}>
-                  <Translate contentKey="catApp.assessment.timeLimit">Time Limit</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.timeLimit">Time Limit</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('timeLimit')} />
                 </th>
                 <th className="hand" onClick={sort('type')}>
-                  <Translate contentKey="catApp.assessment.type">Type</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('type')} />
+                  <Translate contentKey="catApp.assignment.type">Type</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('type')} />
                 </th>
                 <th className="hand" onClick={sort('validationCriteria')}>
-                  <Translate contentKey="catApp.assessment.validationCriteria">Validation Criteria</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.validationCriteria">Validation Criteria</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('validationCriteria')} />
                 </th>
                 <th className="hand" onClick={sort('question')}>
-                  <Translate contentKey="catApp.assessment.question">Question</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.question">Question</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('question')} />
                 </th>
                 <th className="hand" onClick={sort('maxPoints')}>
-                  <Translate contentKey="catApp.assessment.maxPoints">Max Points</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.maxPoints">Max Points</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('maxPoints')} />
                 </th>
                 <th className="hand" onClick={sort('deadline')}>
-                  <Translate contentKey="catApp.assessment.deadline">Deadline</Translate>{' '}
+                  <Translate contentKey="catApp.assignment.deadline">Deadline</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('deadline')} />
                 </th>
                 <th>
-                  <Translate contentKey="catApp.assessment.assignedToUser">Assigned To User</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="catApp.assignment.assignedToUser">Assigned To User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {assessmentList.map((assessment, i) => (
+              {assignmentList.map((assignment, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
-                    <Button tag={Link} to={`/assessment/${assessment.id}`} color="link" size="sm">
-                      {assessment.id}
+                    <Button tag={Link} to={`/assignment/${assignment.id}`} color="link" size="sm">
+                      {assignment.id}
                     </Button>
                   </td>
-                  <td>{assessment.title}</td>
-                  <td>{assessment.description}</td>
-                  <td>{assessment.languageFramework}</td>
-                  <td>{assessment.difficultyLevel}</td>
-                  <td>{assessment.timeLimit}</td>
-                  <td>{assessment.type}</td>
-                  <td>{assessment.validationCriteria}</td>
-                  <td>{assessment.question}</td>
-                  <td>{assessment.maxPoints}</td>
-                  <td>{assessment.deadline ? <TextFormat type="date" value={assessment.deadline} format={APP_DATE_FORMAT} /> : null}</td>
-                  <td>{assessment.assignedToUser ? assessment.assignedToUser.id : ''}</td>
+                  <td>{assignment.title}</td>
+                  <td>{assignment.description}</td>
+                  <td>{assignment.languageFramework}</td>
+                  <td>{assignment.difficultyLevel}</td>
+                  <td>{assignment.timeLimit}</td>
+                  <td>{assignment.type}</td>
+                  <td>{assignment.validationCriteria}</td>
+                  <td>{assignment.question}</td>
+                  <td>{assignment.maxPoints}</td>
+                  <td>{assignment.deadline ? <TextFormat type="date" value={assignment.deadline} format={APP_DATE_FORMAT} /> : null}</td>
+                  <td>{assignment.assignedToUser ? assignment.assignedToUser.id : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`/assessment/${assessment.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                      <Button tag={Link} to={`/assignment/${assignment.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
@@ -188,7 +188,7 @@ export const Assessment = () => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`/assessment/${assessment.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`/assignment/${assignment.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
                         size="sm"
                         data-cy="entityEditButton"
@@ -200,7 +200,7 @@ export const Assessment = () => {
                       </Button>
                       <Button
                         onClick={() =>
-                          (window.location.href = `/assessment/${assessment.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`)
+                          (window.location.href = `/assignment/${assignment.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`)
                         }
                         color="danger"
                         size="sm"
@@ -220,13 +220,13 @@ export const Assessment = () => {
         ) : (
           !loading && (
             <div className="alert alert-warning">
-              <Translate contentKey="catApp.assessment.home.notFound">No Assessments found</Translate>
+              <Translate contentKey="catApp.assignment.home.notFound">No Assessments found</Translate>
             </div>
           )
         )}
       </div>
       {totalItems ? (
-        <div className={assessmentList && assessmentList.length > 0 ? '' : 'd-none'}>
+        <div className={assignmentList && assignmentList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
             <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
           </div>

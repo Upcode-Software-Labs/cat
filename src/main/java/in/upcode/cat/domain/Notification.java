@@ -2,6 +2,7 @@ package in.upcode.cat.domain;
 
 import in.upcode.cat.domain.enumeration.NotificationStatus;
 import in.upcode.cat.domain.enumeration.NotificationType;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
@@ -9,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "notification")
-public class Notification {
+public class Notification extends AbstractAuditingEntity<String> implements Serializable {
 
     @Id
     private String id;
@@ -33,7 +34,7 @@ public class Notification {
         // Default constructor
     }
 
-    // Getters and Setters
+    @Override
     public String getId() {
         return id;
     }

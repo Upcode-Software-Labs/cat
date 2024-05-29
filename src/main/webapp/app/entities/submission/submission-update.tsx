@@ -8,12 +8,12 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IUserAssessment } from 'app/shared/model/user-assessment.model';
-import { getEntities as getUserAssessments } from 'app/entities/user-assessment/user-assessment.reducer';
+import { IUserAssessment } from 'app/shared/model/user-assignment.model';
+import { getEntities as getUserAssessments } from 'app/entities/user-assignment/user-assignment.reducer';
 import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { IAssessment } from 'app/shared/model/assessment.model';
-import { getEntities as getAssessments } from 'app/entities/assessment/assessment.reducer';
+import { IAssessment } from 'app/shared/model/assignment.model';
+import { getEntities as getAssessments } from 'app/entities/assignment/assignment.reducer';
 import { ISubmission } from 'app/shared/model/submission.model';
 import { getEntity, updateEntity, createEntity, reset } from './submission.reducer';
 
@@ -25,9 +25,9 @@ export const SubmissionUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  const userAssessments = useAppSelector(state => state.userAssessment.entities);
+  const userAssessments = useAppSelector(state => state.userAssignment.entities);
   const users = useAppSelector(state => state.userManagement.users);
-  const assessments = useAppSelector(state => state.assessment.entities);
+  const assessments = useAppSelector(state => state.assignment.entities);
   const submissionEntity = useAppSelector(state => state.submission.entity);
   const loading = useAppSelector(state => state.submission.loading);
   const updating = useAppSelector(state => state.submission.updating);
@@ -66,7 +66,7 @@ export const SubmissionUpdate = () => {
       ...values,
       forAssignment: userAssessments.find(it => it.id.toString() === values.forAssignment.toString()),
       user: users.find(it => it.id.toString() === values.user.toString()),
-      assessment: assessments.find(it => it.id.toString() === values.assessment.toString()),
+      assignment: assessments.find(it => it.id.toString() === values.assignment.toString()),
     };
 
     if (isNew) {
@@ -83,7 +83,7 @@ export const SubmissionUpdate = () => {
           ...submissionEntity,
           forAssignment: submissionEntity?.forAssignment?.id,
           user: submissionEntity?.user?.id,
-          assessment: submissionEntity?.assessment?.id,
+          assignment: submissionEntity?.assignment?.id,
         };
 
   return (
@@ -184,10 +184,10 @@ export const SubmissionUpdate = () => {
                   : null}
               </ValidatedField>
               <ValidatedField
-                id="submission-assessment"
-                name="assessment"
-                data-cy="assessment"
-                label={translate('catApp.submission.assessment')}
+                id="submission-assignment"
+                name="assignment"
+                data-cy="assignment"
+                label={translate('catApp.submission.assignment')}
                 type="select"
               >
                 <option value="" key="0" />

@@ -100,7 +100,7 @@ export const ValidationRule = () => {
                   <FontAwesomeIcon icon={getSortIconByFieldName('ruleType')} />
                 </th>
                 <th>
-                  <Translate contentKey="catApp.validationRule.assessment">Assessment</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="catApp.validationRule.assignment">Assessment</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -117,8 +117,8 @@ export const ValidationRule = () => {
                   <td>{validationRule.validationScript}</td>
                   <td>{validationRule.ruleType}</td>
                   <td>
-                    {validationRule.assessment ? (
-                      <Link to={`/assessment/${validationRule.assessment.id}`}>{validationRule.assessment.id}</Link>
+                    {validationRule.assignment ? (
+                      <Link to={`/assignment/${validationRule.assignment.id}`}>{validationRule.assignment.id}</Link>
                     ) : (
                       ''
                     )}

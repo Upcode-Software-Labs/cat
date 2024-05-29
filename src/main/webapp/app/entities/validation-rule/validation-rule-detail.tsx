@@ -50,9 +50,9 @@ export const ValidationRuleDetail = () => {
           </dt>
           <dd>{validationRuleEntity.ruleType}</dd>
           <dt>
-            <Translate contentKey="catApp.validationRule.assessment">Assessment</Translate>
+            <Translate contentKey="catApp.validationRule.assignment">Assessment</Translate>
           </dt>
-          <dd>{validationRuleEntity.assessment ? validationRuleEntity.assessment.id : ''}</dd>
+          <dd>{validationRuleEntity.assignment ? validationRuleEntity.assignment.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/validation-rule" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

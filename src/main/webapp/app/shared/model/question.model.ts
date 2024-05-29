@@ -1,4 +1,4 @@
-import { IAssessment } from 'app/shared/model/assessment.model';
+import { IAssessment } from 'app/shared/model/assignment.model';
 
 export interface IQuestion {
   id?: string;
@@ -6,7 +6,7 @@ export interface IQuestion {
   codeSnippet?: string | null;
   resources?: string | null;
   points?: number | null;
-  assessment?: IAssessment | null;
+  assignment?: IAssessment | null;
 }
 
 export const defaultValue: Readonly<IQuestion> = {};

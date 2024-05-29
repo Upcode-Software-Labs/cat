@@ -56,91 +56,6 @@ public class SubmissionService {
     }
 
     /**
-     * Save a submission.
-     *
-     * @param submissionDTO the entity to save.
-     * @return the persisted entity.
-     */
-    public SubmissionDTO saveSubmit(SubmissionDTO submissionDTO)
-        throws URISyntaxException, IOException, InterruptedException, CheckstyleException {
-        log.debug("Request to save Submission : {}", submissionDTO);
-
-        String githubUrl = submissionDTO.getGithubUrl();
-
-        // Remove "/blob/"
-        String rawUrl = githubUrl.replace("/blob/", "/");
-
-        // Replace "github.com" with "raw.githubusercontent.com"
-        rawUrl = rawUrl.replace("github.com", "raw.githubusercontent.com");
-
-        String rawContent = SubmissionCodeQualityCheck.getRawContent(rawUrl);
-
-        final String[] parts = rawContent.split("/");
-
-        final String fileName = parts[parts.length - 1];
-
-        log.debug("File contents : {}", rawContent);
-
-        // Display the result using logger.debug
-        log.debug("####Checkstyle Result: {}", SubmissionCodeQualityCheck.codeCheck(fileName, rawContent));
-        // submissionDTO.setResults(SubmissionCodeQualityCheck.codeCheck(fileName, rawContent));
-
-        Submission submission = submissionMapper.toEntity(submissionDTO);
-        submission = submissionRepository.save(submission);
-        return submissionMapper.toDto(submission);
-    }
-
-    /**
-     * Save a submission.
-     *
-     * @param submissionDTO the entity to save.
-     * @return the persisted entity.
-     */
-    public SubmissionDTO checkQuality(SubmissionDTO submissionDTO) throws Exception {
-        log.debug("Request to save Submission afet code Quality check : {}", submissionDTO);
-
-        final String githubUrl = submissionDTO.getGithubUrl();
-
-        //connect to github
-        GitHub gitHub = GitHub.connectAnonymously();
-
-        final String[] parts = SubmissionCodeQualityCheck.extractUsernameAndRepo(githubUrl);
-
-        //get the public repo
-        GHRepository repo = gitHub.getRepository(parts[0] + "/" + parts[1]);
-
-        // List all files in the repository
-        List<GHContent> contents = repo.getDirectoryContent("");
-
-        final List<String> results = new ArrayList<>(); // Initialize an empty list to hold the results
-
-        // Perform Checkstyle analysis for each file
-        for (GHContent content : contents) {
-            if (!content.isDirectory() && content.getName().endsWith(".java")) {
-                final String fileName = content.getName();
-                final String fileContent = content.getContent();
-
-                log.debug("List of Files {}", fileName);
-
-                // Perform Checkstyle analysis for the file
-                final String report = SubmissionCodeQualityCheck.analyzeJavaFile(fileName, fileContent);
-
-                // Append the result to the list
-                results.add(fileName + ": " + report);
-
-                // Print quality report
-                log.info("Quality Report for: {}", fileName);
-                log.info(results.toString());
-            }
-            // submissionDTO.setResults(results.toString());
-        }
-
-        Submission submission = submissionMapper.toEntity(submissionDTO);
-        submission = submissionRepository.save(submission);
-        return submissionMapper.toDto(submission);
-    }
-
-    /**
      * Update a submission.
      *
      * @param submissionDTO the entity to save.
@@ -192,9 +107,9 @@ public class SubmissionService {
 
      * @return the list of entities.
      */
-    public Page<SubmissionDTO> findByAssessmentId(String type, Pageable pageable) {
-        return submissionRepository.findByAssessment_Id(type, pageable).map(submissionMapper::toDto);
-    }
+    //    public Page<SubmissionDTO> findByAssignmentId(String type, Pageable pageable) {
+    //        return submissionRepository.findByAssignment_Id(type, pageable).map(submissionMapper::toDto);
+    //    }
 
     /**
      * Get the submissions based on search.
@@ -205,13 +120,13 @@ public class SubmissionService {
      * @return the list of entities.
      */
 
-    public Page<SubmissionDTO> findByUserId(String user, Pageable pageable) {
-        return submissionRepository.findByUser_Id(user, pageable).map(submissionMapper::toDto);
-    }
-
-    public Page<SubmissionDTO> findByUserIdAndAssessmentId(String userId, String assessmentId, Pageable pageable) {
-        return submissionRepository.findByUserIdAndAssessmentId(userId, assessmentId, pageable).map(submissionMapper::toDto);
-    }
+    //    public Page<SubmissionDTO> findByUserId(String user, Pageable pageable) {
+    //        return submissionRepository.findByUser_Id(user, pageable).map(submissionMapper::toDto);
+    //    }
+    //
+    //    public Page<SubmissionDTO> findByUserIdAndAssessmentId(String userId, String assessmentId, Pageable pageable) {
+    //        return submissionRepository.findByUserIdAndAssignmentId(userId, assessmentId, pageable).map(submissionMapper::toDto);
+    //    }
 
     /**
      * Get the submissions based on search.
@@ -221,9 +136,9 @@ public class SubmissionService {
 
      * @return the list of entities.
      */
-    public Page<SubmissionDTO> findByForAssessmentId(String status, Pageable pageable) {
-        return submissionRepository.findByForAssignment_Id(status, pageable);
-    }
+    //    public Page<SubmissionDTO> findByForAssessmentId(String status, Pageable pageable) {
+    //        return submissionRepository.findByForAssignment_Id(status, pageable);
+    //    }
 
     /**
      * Get one submission by id.

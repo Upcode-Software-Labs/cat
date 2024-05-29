@@ -8,8 +8,8 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IAssessment } from 'app/shared/model/assessment.model';
-import { getEntities as getAssessments } from 'app/entities/assessment/assessment.reducer';
+import { IAssessment } from 'app/shared/model/assignment.model';
+import { getEntities as getAssessments } from 'app/entities/assignment/assignment.reducer';
 import { IQuestion } from 'app/shared/model/question.model';
 import { getEntity, updateEntity, createEntity, reset } from './question.reducer';
 
@@ -21,7 +21,7 @@ export const QuestionUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  const assessments = useAppSelector(state => state.assessment.entities);
+  const assessments = useAppSelector(state => state.assignment.entities);
   const questionEntity = useAppSelector(state => state.question.entity);
   const loading = useAppSelector(state => state.question.loading);
   const updating = useAppSelector(state => state.question.updating);
@@ -56,7 +56,7 @@ export const QuestionUpdate = () => {
     const entity = {
       ...questionEntity,
       ...values,
-      assessment: assessments.find(it => it.id.toString() === values.assessment.toString()),
+      assignment: assessments.find(it => it.id.toString() === values.assignment.toString()),
     };
 
     if (isNew) {
@@ -71,7 +71,7 @@ export const QuestionUpdate = () => {
       ? {}
       : {
           ...questionEntity,
-          assessment: questionEntity?.assessment?.id,
+          assignment: questionEntity?.assignment?.id,
         };
 
   return (
@@ -125,10 +125,10 @@ export const QuestionUpdate = () => {
               />
               <ValidatedField label={translate('catApp.question.points')} id="question-points" name="points" data-cy="points" type="text" />
               <ValidatedField
-                id="question-assessment"
-                name="assessment"
-                data-cy="assessment"
-                label={translate('catApp.question.assessment')}
+                id="question-assignment"
+                name="assignment"
+                data-cy="assignment"
+                label={translate('catApp.question.assignment')}
                 type="select"
               >
                 <option value="" key="0" />

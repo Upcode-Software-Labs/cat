@@ -1,11 +1,11 @@
-import { IAssessment } from 'app/shared/model/assessment.model';
+import { IAssessment } from 'app/shared/model/assignment.model';
 
 export interface IValidationRule {
   id?: string;
   description?: string;
   validationScript?: string | null;
   ruleType?: string;
-  assessment?: IAssessment | null;
+  assignment?: IAssessment | null;
 }
 
 export const defaultValue: Readonly<IValidationRule> = {};

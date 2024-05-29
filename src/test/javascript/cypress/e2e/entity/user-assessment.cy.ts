@@ -11,13 +11,13 @@ import {
 } from '../../support/entity';
 
 describe('UserAssessment e2e test', () => {
-  const userAssessmentPageUrl = '/user-assessment';
-  const userAssessmentPageUrlPattern = new RegExp('/user-assessment(\\?.*)?$');
+  const userAssessmentPageUrl = '/user-assignment';
+  const userAssessmentPageUrlPattern = new RegExp('/user-assignment(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const userAssessmentSample = { status: 'ASSIGNED', assignedAt: '2024-03-16T17:04:39.142Z' };
 
-  let userAssessment;
+  let userAssignment;
 
   beforeEach(() => {
     cy.login(username, password);
@@ -30,19 +30,19 @@ describe('UserAssessment e2e test', () => {
   });
 
   afterEach(() => {
-    if (userAssessment) {
+    if (userAssignment) {
       cy.authenticatedRequest({
         method: 'DELETE',
-        url: `/api/user-assessments/${userAssessment.id}`,
+        url: `/api/user-assessments/${userAssignment.id}`,
       }).then(() => {
-        userAssessment = undefined;
+        userAssignment = undefined;
       });
     }
   });
 
   it('UserAssessments menu should load UserAssessments page', () => {
     cy.visit('/');
-    cy.clickOnEntityMenuItem('user-assessment');
+    cy.clickOnEntityMenuItem('user-assignment');
     cy.wait('@entitiesRequest').then(({ response }) => {
       if (response.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
@@ -63,7 +63,7 @@ describe('UserAssessment e2e test', () => {
 
       it('should load create UserAssessment page', () => {
         cy.get(entityCreateButtonSelector).click();
-        cy.url().should('match', new RegExp('/user-assessment/new$'));
+        cy.url().should('match', new RegExp('/user-assignment/new$'));
         cy.getEntityCreateUpdateHeading('UserAssessment');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
@@ -81,7 +81,7 @@ describe('UserAssessment e2e test', () => {
           url: '/api/user-assessments',
           body: userAssessmentSample,
         }).then(({ body }) => {
-          userAssessment = body;
+          userAssignment = body;
 
           cy.intercept(
             {
@@ -94,7 +94,7 @@ describe('UserAssessment e2e test', () => {
               headers: {
                 link: '<http://localhost/api/user-assessments?page=0&size=20>; rel="last",<http://localhost/api/user-assessments?page=0&size=20>; rel="first"',
               },
-              body: [userAssessment],
+              body: [userAssignment],
             },
           ).as('entitiesRequestInternal');
         });
@@ -106,7 +106,7 @@ describe('UserAssessment e2e test', () => {
 
       it('detail button click should load details UserAssessment page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
-        cy.getEntityDetailsHeading('userAssessment');
+        cy.getEntityDetailsHeading('userAssignment');
         cy.get(entityDetailsBackButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response.statusCode).to.equal(200);
@@ -139,7 +139,7 @@ describe('UserAssessment e2e test', () => {
         cy.intercept('GET', '/api/user-assessments/*').as('dialogDeleteRequest');
         cy.get(entityDeleteButtonSelector).last().click();
         cy.wait('@dialogDeleteRequest');
-        cy.getEntityDeleteDialogHeading('userAssessment').should('exist');
+        cy.getEntityDeleteDialogHeading('userAssignment').should('exist');
         cy.get(entityConfirmDeleteButtonSelector).click();
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response.statusCode).to.equal(204);
@@ -149,7 +149,7 @@ describe('UserAssessment e2e test', () => {
         });
         cy.url().should('match', userAssessmentPageUrlPattern);
 
-        userAssessment = undefined;
+        userAssignment = undefined;
       });
     });
   });
@@ -176,7 +176,7 @@ describe('UserAssessment e2e test', () => {
 
       cy.wait('@postEntityRequest').then(({ response }) => {
         expect(response.statusCode).to.equal(201);
-        userAssessment = response.body;
+        userAssignment = response.body;
       });
       cy.wait('@entitiesRequest').then(({ response }) => {
         expect(response.statusCode).to.equal(200);

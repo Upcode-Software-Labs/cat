@@ -10,11 +10,11 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { IAssessment } from 'app/shared/model/assessment.model';
-import { getEntities as getAssessments } from 'app/entities/assessment/assessment.reducer';
-import { IUserAssessment } from 'app/shared/model/user-assessment.model';
-import { AssessmentStatus } from 'app/shared/model/enumerations/assessment-status.model';
-import { getEntity, updateEntity, createEntity, reset } from './user-assessment.reducer';
+import { IAssessment } from 'app/shared/model/assignment.model';
+import { getEntities as getAssessments } from 'app/entities/assignment/assignment.reducer';
+import { IUserAssessment } from 'app/shared/model/user-assignment.model';
+import { AssessmentStatus } from 'app/shared/model/enumerations/assignment-status.model';
+import { getEntity, updateEntity, createEntity, reset } from './user-assignment.reducer';
 
 export const UserAssessmentUpdate = () => {
   const dispatch = useAppDispatch();
@@ -25,15 +25,15 @@ export const UserAssessmentUpdate = () => {
   const isNew = id === undefined;
 
   const users = useAppSelector(state => state.userManagement.users);
-  const assessments = useAppSelector(state => state.assessment.entities);
-  const userAssessmentEntity = useAppSelector(state => state.userAssessment.entity);
-  const loading = useAppSelector(state => state.userAssessment.loading);
-  const updating = useAppSelector(state => state.userAssessment.updating);
-  const updateSuccess = useAppSelector(state => state.userAssessment.updateSuccess);
+  const assessments = useAppSelector(state => state.assignment.entities);
+  const userAssessmentEntity = useAppSelector(state => state.userAssignment.entity);
+  const loading = useAppSelector(state => state.userAssignment.loading);
+  const updating = useAppSelector(state => state.userAssignment.updating);
+  const updateSuccess = useAppSelector(state => state.userAssignment.updateSuccess);
   const assessmentStatusValues = Object.keys(AssessmentStatus);
 
   const handleClose = () => {
-    navigate('/user-assessment' + location.search);
+    navigate('/user-assignment' + location.search);
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export const UserAssessmentUpdate = () => {
       ...values,
       submittedByUser: users.find(it => it.id.toString() === values.submittedByUser.toString()),
       user: users.find(it => it.id.toString() === values.user.toString()),
-      assessment: assessments.find(it => it.id.toString() === values.assessment.toString()),
+      assignment: assessments.find(it => it.id.toString() === values.assignment.toString()),
     };
 
     if (isNew) {
@@ -86,15 +86,15 @@ export const UserAssessmentUpdate = () => {
           deadline: convertDateTimeFromServer(userAssessmentEntity.deadline),
           submittedByUser: userAssessmentEntity?.submittedByUser?.id,
           user: userAssessmentEntity?.user?.id,
-          assessment: userAssessmentEntity?.assessment?.id,
+          assignment: userAssessmentEntity?.assignment?.id,
         };
 
   return (
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="catApp.userAssessment.home.createOrEditLabel" data-cy="UserAssessmentCreateUpdateHeading">
-            <Translate contentKey="catApp.userAssessment.home.createOrEditLabel">Create or edit a UserAssessment</Translate>
+          <h2 id="catApp.userAssignment.home.createOrEditLabel" data-cy="UserAssessmentCreateUpdateHeading">
+            <Translate contentKey="catApp.userAssignment.home.createOrEditLabel">Create or edit a UserAssessment</Translate>
           </h2>
         </Col>
       </Row>
@@ -109,14 +109,14 @@ export const UserAssessmentUpdate = () => {
                   name="id"
                   required
                   readOnly
-                  id="user-assessment-id"
+                  id="user-assignment-id"
                   label={translate('global.field.id')}
                   validate={{ required: true }}
                 />
               ) : null}
               <ValidatedField
-                label={translate('catApp.userAssessment.status')}
-                id="user-assessment-status"
+                label={translate('catApp.userAssignment.status')}
+                id="user-assignment-status"
                 name="status"
                 data-cy="status"
                 type="select"
@@ -128,8 +128,8 @@ export const UserAssessmentUpdate = () => {
                 ))}
               </ValidatedField>
               <ValidatedField
-                label={translate('catApp.userAssessment.assignedAt')}
-                id="user-assessment-assignedAt"
+                label={translate('catApp.userAssignment.assignedAt')}
+                id="user-assignment-assignedAt"
                 name="assignedAt"
                 data-cy="assignedAt"
                 type="datetime-local"
@@ -139,18 +139,18 @@ export const UserAssessmentUpdate = () => {
                 }}
               />
               <ValidatedField
-                label={translate('catApp.userAssessment.deadline')}
-                id="user-assessment-deadline"
+                label={translate('catApp.userAssignment.deadline')}
+                id="user-assignment-deadline"
                 name="deadline"
                 data-cy="deadline"
                 type="datetime-local"
                 placeholder="YYYY-MM-DD HH:mm"
               />
               <ValidatedField
-                id="user-assessment-submittedByUser"
+                id="user-assignment-submittedByUser"
                 name="submittedByUser"
                 data-cy="submittedByUser"
-                label={translate('catApp.userAssessment.submittedByUser')}
+                label={translate('catApp.userAssignment.submittedByUser')}
                 type="select"
               >
                 <option value="" key="0" />
@@ -163,10 +163,10 @@ export const UserAssessmentUpdate = () => {
                   : null}
               </ValidatedField>
               <ValidatedField
-                id="user-assessment-user"
+                id="user-assignment-user"
                 name="user"
                 data-cy="user"
-                label={translate('catApp.userAssessment.user')}
+                label={translate('catApp.userAssignment.user')}
                 type="select"
               >
                 <option value="" key="0" />
@@ -179,10 +179,10 @@ export const UserAssessmentUpdate = () => {
                   : null}
               </ValidatedField>
               <ValidatedField
-                id="user-assessment-assessment"
-                name="assessment"
-                data-cy="assessment"
-                label={translate('catApp.userAssessment.assessment')}
+                id="user-assignment-assignment"
+                name="assignment"
+                data-cy="assignment"
+                label={translate('catApp.userAssignment.assignment')}
                 type="select"
               >
                 <option value="" key="0" />
@@ -194,7 +194,7 @@ export const UserAssessmentUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/user-assessment" replace color="info">
+              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/user-assignment" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">

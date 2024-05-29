@@ -5,7 +5,7 @@ import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useAppDispatch, useAppSelector } from 'app/config/store';
-import { getEntity, deleteEntity } from './user-assessment.reducer';
+import { getEntity, deleteEntity } from './user-assignment.reducer';
 
 export const UserAssessmentDeleteDialog = () => {
   const dispatch = useAppDispatch();
@@ -21,11 +21,11 @@ export const UserAssessmentDeleteDialog = () => {
     setLoadModal(true);
   }, []);
 
-  const userAssessmentEntity = useAppSelector(state => state.userAssessment.entity);
-  const updateSuccess = useAppSelector(state => state.userAssessment.updateSuccess);
+  const userAssessmentEntity = useAppSelector(state => state.userAssignment.entity);
+  const updateSuccess = useAppSelector(state => state.userAssignment.updateSuccess);
 
   const handleClose = () => {
-    navigate('/user-assessment' + pageLocation.search);
+    navigate('/user-assignment' + pageLocation.search);
   };
 
   useEffect(() => {
@@ -44,8 +44,8 @@ export const UserAssessmentDeleteDialog = () => {
       <ModalHeader toggle={handleClose} data-cy="userAssessmentDeleteDialogHeading">
         <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
       </ModalHeader>
-      <ModalBody id="catApp.userAssessment.delete.question">
-        <Translate contentKey="catApp.userAssessment.delete.question" interpolate={{ id: userAssessmentEntity.id }}>
+      <ModalBody id="catApp.userAssignment.delete.question">
+        <Translate contentKey="catApp.userAssignment.delete.question" interpolate={{ id: userAssessmentEntity.id }}>
           Are you sure you want to delete this UserAssessment?
         </Translate>
       </ModalBody>
@@ -55,7 +55,7 @@ export const UserAssessmentDeleteDialog = () => {
           &nbsp;
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
-        <Button id="jhi-confirm-delete-userAssessment" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
+        <Button id="jhi-confirm-delete-userAssignment" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />
           &nbsp;
           <Translate contentKey="entity.action.delete">Delete</Translate>

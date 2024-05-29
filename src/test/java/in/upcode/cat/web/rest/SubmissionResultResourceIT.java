@@ -8,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import in.upcode.cat.IntegrationTest;
 import in.upcode.cat.domain.SubmissionResult;
 import in.upcode.cat.repository.SubmissionResultRepository;
-import in.upcode.cat.service.dto.SubmissionResultDTO;
-import in.upcode.cat.service.mapper.SubmissionResultMapper;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;

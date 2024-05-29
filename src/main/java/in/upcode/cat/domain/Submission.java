@@ -3,6 +3,8 @@ package in.upcode.cat.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Arrays;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "submission")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Submission implements Serializable {
+public class Submission extends AbstractAuditingEntity<String> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,12 +29,6 @@ public class Submission implements Serializable {
     @Field("screenshots")
     private byte[] screenshots;
 
-    @Field("screenshots_content_type")
-    private String screenshotsContentType;
-
-    @Field("video_explanation")
-    private String videoExplanation;
-
     @Field("text_description")
     private String textDescription;
 
@@ -42,25 +38,17 @@ public class Submission implements Serializable {
     @Field("points_scored")
     private Integer pointsScored;
 
-    //    @Field
-    //    private String results;
+    @Field("time_taken")
+    private Instant timeTaken;
 
     @DBRef
     @Field("forAssignment")
-    @JsonIgnoreProperties(value = { "submittedByUser", "user", "assessment" }, allowSetters = true)
-    private UserAssessment forAssignment;
-
-    @DBRef
-    @Field("user")
-    private User user;
-
-    @DBRef
-    @Field("assessment")
-    @JsonIgnoreProperties(value = { "assignedToUser" }, allowSetters = true)
-    private Assessment assessment;
+    //@JsonIgnoreProperties(value = { "submittedByUser", "user", "assessment" }, allowSetters = true)
+    private UserAssignment forAssignment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
+    @Override
     public String getId() {
         return this.id;
     }
@@ -100,32 +88,6 @@ public class Submission implements Serializable {
         this.screenshots = screenshots;
     }
 
-    public String getScreenshotsContentType() {
-        return this.screenshotsContentType;
-    }
-
-    public Submission screenshotsContentType(String screenshotsContentType) {
-        this.screenshotsContentType = screenshotsContentType;
-        return this;
-    }
-
-    public void setScreenshotsContentType(String screenshotsContentType) {
-        this.screenshotsContentType = screenshotsContentType;
-    }
-
-    public String getVideoExplanation() {
-        return this.videoExplanation;
-    }
-
-    public Submission videoExplanation(String videoExplanation) {
-        this.setVideoExplanation(videoExplanation);
-        return this;
-    }
-
-    public void setVideoExplanation(String videoExplanation) {
-        this.videoExplanation = videoExplanation;
-    }
-
     public String getTextDescription() {
         return this.textDescription;
     }
@@ -152,6 +114,19 @@ public class Submission implements Serializable {
         this.feedback = feedback;
     }
 
+    public Instant getTimeTaken() {
+        return timeTaken;
+    }
+
+    public Submission timeTaken(Instant timeTaken) {
+        this.timeTaken(timeTaken);
+        return this;
+    }
+
+    public void setTimeTaken(Instant timeTaken) {
+        this.timeTaken = timeTaken;
+    }
+
     public Integer getPointsScored() {
         return this.pointsScored;
     }
@@ -165,57 +140,18 @@ public class Submission implements Serializable {
         this.pointsScored = pointsScored;
     }
 
-    public UserAssessment getForAssignment() {
+    public UserAssignment getForAssignment() {
         return this.forAssignment;
     }
 
-    public void setForAssignment(UserAssessment userAssessment) {
-        this.forAssignment = userAssessment;
+    public void setForAssignment(UserAssignment userAssignment) {
+        this.forAssignment = userAssignment;
     }
 
-    public Submission forAssignment(UserAssessment userAssessment) {
-        this.setForAssignment(userAssessment);
+    public Submission forAssignment(UserAssignment userAssignment) {
+        this.setForAssignment(userAssignment);
         return this;
     }
-
-    //    public Submission results(String result){
-    //        this.setResults(results);
-    //        return this;
-    //    }
-
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Submission user(User user) {
-        this.setUser(user);
-        return this;
-    }
-
-    public Assessment getAssessment() {
-        return this.assessment;
-    }
-
-    public void setAssessment(Assessment assessment) {
-        this.assessment = assessment;
-    }
-
-    public Submission assessment(Assessment assessment) {
-        this.setAssessment(assessment);
-        return this;
-    }
-
-    //    public String getResults() {
-    //        return results;
-    //    }
-    //
-    //    public void setResults(String results) {
-    //        this.results = results;
-    //    }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -236,18 +172,31 @@ public class Submission implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "Submission{" +
-            "id=" + getId() +
-            ", githubUrl='" + getGithubUrl() + "'" +
-            ", screenshots='" + getScreenshots() + "'" +
-            ", screenshotsContentType='" + getScreenshotsContentType() + "'" +
-            ", videoExplanation='" + getVideoExplanation() + "'" +
-            ", textDescription='" + getTextDescription() + "'" +
-            ", feedback='" + getFeedback() + "'" +
-            ", pointsScored=" + getPointsScored() +
-            "}";
+        return (
+            "Submission{" +
+            "id='" +
+            id +
+            '\'' +
+            ", githubUrl='" +
+            githubUrl +
+            '\'' +
+            ", screenshots=" +
+            Arrays.toString(screenshots) +
+            ", textDescription='" +
+            textDescription +
+            '\'' +
+            ", feedback='" +
+            feedback +
+            '\'' +
+            ", pointsScored=" +
+            pointsScored +
+            ", timeTaken=" +
+            timeTaken +
+            ", forAssignment=" +
+            forAssignment +
+            '}'
+        );
     }
 }

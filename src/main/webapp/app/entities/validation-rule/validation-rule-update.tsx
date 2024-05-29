@@ -8,8 +8,8 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IAssessment } from 'app/shared/model/assessment.model';
-import { getEntities as getAssessments } from 'app/entities/assessment/assessment.reducer';
+import { IAssessment } from 'app/shared/model/assignment.model';
+import { getEntities as getAssessments } from 'app/entities/assignment/assignment.reducer';
 import { IValidationRule } from 'app/shared/model/validation-rule.model';
 import { getEntity, updateEntity, createEntity, reset } from './validation-rule.reducer';
 
@@ -21,7 +21,7 @@ export const ValidationRuleUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  const assessments = useAppSelector(state => state.assessment.entities);
+  const assessments = useAppSelector(state => state.assignment.entities);
   const validationRuleEntity = useAppSelector(state => state.validationRule.entity);
   const loading = useAppSelector(state => state.validationRule.loading);
   const updating = useAppSelector(state => state.validationRule.updating);
@@ -52,7 +52,7 @@ export const ValidationRuleUpdate = () => {
     const entity = {
       ...validationRuleEntity,
       ...values,
-      assessment: assessments.find(it => it.id.toString() === values.assessment.toString()),
+      assignment: assessments.find(it => it.id.toString() === values.assignment.toString()),
     };
 
     if (isNew) {
@@ -67,7 +67,7 @@ export const ValidationRuleUpdate = () => {
       ? {}
       : {
           ...validationRuleEntity,
-          assessment: validationRuleEntity?.assessment?.id,
+          assignment: validationRuleEntity?.assignment?.id,
         };
 
   return (
@@ -123,10 +123,10 @@ export const ValidationRuleUpdate = () => {
                 }}
               />
               <ValidatedField
-                id="validation-rule-assessment"
-                name="assessment"
-                data-cy="assessment"
-                label={translate('catApp.validationRule.assessment')}
+                id="validation-rule-assignment"
+                name="assignment"
+                data-cy="assignment"
+                label={translate('catApp.validationRule.assignment')}
                 type="select"
               >
                 <option value="" key="0" />
