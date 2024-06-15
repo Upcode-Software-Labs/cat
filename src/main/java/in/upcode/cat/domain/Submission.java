@@ -3,6 +3,8 @@ package in.upcode.cat.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Arrays;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -27,14 +29,11 @@ public class Submission implements Serializable {
     @Field("screenshots")
     private byte[] screenshots;
 
-    @Field("screenshots_content_type")
-    private String screenshotsContentType;
-
-    @Field("video_explanation")
-    private String videoExplanation;
-
     @Field("text_description")
     private String textDescription;
+
+    @Field("timeTaken")
+    private Instant timeTaken;
 
     @Field("feedback")
     private String feedback;
@@ -44,17 +43,16 @@ public class Submission implements Serializable {
 
     @DBRef
     @Field("forAssignment")
-    @JsonIgnoreProperties(value = { "submittedByUser", "user", "assessment" }, allowSetters = true)
-    private UserAssessment forAssignment;
+    private UserAssignment forAssignment;
 
     @DBRef
     @Field("user")
     private User user;
 
     @DBRef
-    @Field("assessment")
+    @Field("assignment")
     @JsonIgnoreProperties(value = { "assignedToUser" }, allowSetters = true)
-    private Assessment assessment;
+    private Assignment assignment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -97,32 +95,6 @@ public class Submission implements Serializable {
         this.screenshots = screenshots;
     }
 
-    public String getScreenshotsContentType() {
-        return this.screenshotsContentType;
-    }
-
-    public Submission screenshotsContentType(String screenshotsContentType) {
-        this.screenshotsContentType = screenshotsContentType;
-        return this;
-    }
-
-    public void setScreenshotsContentType(String screenshotsContentType) {
-        this.screenshotsContentType = screenshotsContentType;
-    }
-
-    public String getVideoExplanation() {
-        return this.videoExplanation;
-    }
-
-    public Submission videoExplanation(String videoExplanation) {
-        this.setVideoExplanation(videoExplanation);
-        return this;
-    }
-
-    public void setVideoExplanation(String videoExplanation) {
-        this.videoExplanation = videoExplanation;
-    }
-
     public String getTextDescription() {
         return this.textDescription;
     }
@@ -134,6 +106,19 @@ public class Submission implements Serializable {
 
     public void setTextDescription(String textDescription) {
         this.textDescription = textDescription;
+    }
+
+    public Instant getTimeTaken() {
+        return this.timeTaken;
+    }
+
+    public Submission timeTaken(Instant timeTaken) {
+        this.setTimeTaken(timeTaken);
+        return this;
+    }
+
+    public void setTimeTaken(Instant timeTaken) {
+        this.timeTaken = timeTaken;
     }
 
     public String getFeedback() {
@@ -162,16 +147,16 @@ public class Submission implements Serializable {
         this.pointsScored = pointsScored;
     }
 
-    public UserAssessment getForAssignment() {
+    public UserAssignment getForAssignment() {
         return this.forAssignment;
     }
 
-    public void setForAssignment(UserAssessment userAssessment) {
-        this.forAssignment = userAssessment;
+    public void setForAssignment(UserAssignment userAssignment) {
+        this.forAssignment = userAssignment;
     }
 
-    public Submission forAssignment(UserAssessment userAssessment) {
-        this.setForAssignment(userAssessment);
+    public Submission forAssignment(UserAssignment userAssignment) {
+        this.setForAssignment(userAssignment);
         return this;
     }
 
@@ -188,20 +173,94 @@ public class Submission implements Serializable {
         return this;
     }
 
-    public Assessment getAssessment() {
-        return this.assessment;
+    public Assignment getAssignment() {
+        return this.assignment;
     }
 
-    public void setAssessment(Assessment assessment) {
-        this.assessment = assessment;
+    public void setAssignment(Assignment assignment) {
+        this.assignment = assignment;
     }
 
-    public Submission assessment(Assessment assessment) {
-        this.setAssessment(assessment);
+    public Submission assignment(Assignment assignment) {
+        this.setAssignment(assignment);
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    // @Override
+    // public int hashCode() {
+    //     final int prime = 31;
+    //     int result = 1;
+    //     result = prime * result + ((id == null) ? 0 : id.hashCode());
+    //     result = prime * result + ((githubUrl == null) ? 0 : githubUrl.hashCode());
+    //     result = prime * result + Arrays.hashCode(screenshots);
+    //     result = prime * result + ((textDescription == null) ? 0 : textDescription.hashCode());
+    //     result = prime * result + ((timeTaken == null) ? 0 : timeTaken.hashCode());
+    //     result = prime * result + ((feedback == null) ? 0 : feedback.hashCode());
+    //     result = prime * result + ((pointsScored == null) ? 0 : pointsScored.hashCode());
+    //     result = prime * result + ((forAssignment == null) ? 0 : forAssignment.hashCode());
+    //     result = prime * result + ((user == null) ? 0 : user.hashCode());
+    //     result = prime * result + ((assignment == null) ? 0 : assignment.hashCode());
+    //     return result;
+    // }
+
+    // @Override
+    // public boolean equals(Object obj) {
+    //     if (this == obj)
+    //         return true;
+    //     if (obj == null)
+    //         return false;
+    //     if (getClass() != obj.getClass())
+    //         return false;
+    //     Submission other = (Submission) obj;
+    //     if (id == null) {
+    //         if (other.id != null)
+    //             return false;
+    //     } else if (!id.equals(other.id))
+    //         return false;
+    //     if (githubUrl == null) {
+    //         if (other.githubUrl != null)
+    //             return false;
+    //     } else if (!githubUrl.equals(other.githubUrl))
+    //         return false;
+    //     if (!Arrays.equals(screenshots, other.screenshots))
+    //         return false;
+    //     if (textDescription == null) {
+    //         if (other.textDescription != null)
+    //             return false;
+    //     } else if (!textDescription.equals(other.textDescription))
+    //         return false;
+    //     if (timeTaken == null) {
+    //         if (other.timeTaken != null)
+    //             return false;
+    //     } else if (!timeTaken.equals(other.timeTaken))
+    //         return false;
+    //     if (feedback == null) {
+    //         if (other.feedback != null)
+    //             return false;
+    //     } else if (!feedback.equals(other.feedback))
+    //         return false;
+    //     if (pointsScored == null) {
+    //         if (other.pointsScored != null)
+    //             return false;
+    //     } else if (!pointsScored.equals(other.pointsScored))
+    //         return false;
+    //     if (forAssignment == null) {
+    //         if (other.forAssignment != null)
+    //             return false;
+    //     } else if (!forAssignment.equals(other.forAssignment))
+    //         return false;
+    //     if (user == null) {
+    //         if (other.user != null)
+    //             return false;
+    //     } else if (!user.equals(other.user))
+    //         return false;
+    //     if (assignment == null) {
+    //         if (other.assignment != null)
+    //             return false;
+    //     } else if (!assignment.equals(other.assignment))
+    //         return false;
+    //     return true;
+    // }
 
     @Override
     public boolean equals(Object o) {
@@ -220,18 +279,32 @@ public class Submission implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "Submission{" +
-            "id=" + getId() +
-            ", githubUrl='" + getGithubUrl() + "'" +
-            ", screenshots='" + getScreenshots() + "'" +
-            ", screenshotsContentType='" + getScreenshotsContentType() + "'" +
-            ", videoExplanation='" + getVideoExplanation() + "'" +
-            ", textDescription='" + getTextDescription() + "'" +
-            ", feedback='" + getFeedback() + "'" +
-            ", pointsScored=" + getPointsScored() +
-            "}";
+        return (
+            "Submission [id=" +
+            id +
+            ", githubUrl=" +
+            githubUrl +
+            ", screenshots=" +
+            Arrays.toString(screenshots) +
+            ", textDescription=" +
+            textDescription +
+            ", timeTaken=" +
+            timeTaken +
+            ", feedback=" +
+            feedback +
+            ", pointsScored=" +
+            pointsScored +
+            ", forAssignment=" +
+            forAssignment +
+            ", user=" +
+            user +
+            ", assignment=" +
+            assignment +
+            "]"
+        );
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
 }

@@ -1,8 +1,8 @@
 package in.upcode.cat.domain;
 
-import static in.upcode.cat.domain.AssessmentTestSamples.*;
+import static in.upcode.cat.domain.AssignmentTestSamples.*;
 import static in.upcode.cat.domain.SubmissionTestSamples.*;
-import static in.upcode.cat.domain.UserAssessmentTestSamples.*;
+import static in.upcode.cat.domain.UserAssignmentTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import in.upcode.cat.web.rest.TestUtil;
@@ -27,24 +27,24 @@ class SubmissionTest {
     @Test
     void forAssignmentTest() throws Exception {
         Submission submission = getSubmissionRandomSampleGenerator();
-        UserAssessment userAssessmentBack = getUserAssessmentRandomSampleGenerator();
+        UserAssignment userAssignmentBack = getUserAssignmentRandomSampleGenerator();
 
-        submission.setForAssignment(userAssessmentBack);
-        assertThat(submission.getForAssignment()).isEqualTo(userAssessmentBack);
+        submission.setForAssignment(userAssignmentBack);
+        assertThat(submission.getForAssignment()).isEqualTo(userAssignmentBack);
 
         submission.forAssignment(null);
         assertThat(submission.getForAssignment()).isNull();
     }
 
     @Test
-    void assessmentTest() throws Exception {
+    void assignmentTest() throws Exception {
         Submission submission = getSubmissionRandomSampleGenerator();
-        Assessment assessmentBack = getAssessmentRandomSampleGenerator();
+        Assignment assignmentBack = getAssignmentRandomSampleGenerator();
 
-        submission.setAssessment(assessmentBack);
-        assertThat(submission.getAssessment()).isEqualTo(assessmentBack);
+        submission.setAssignment(assignmentBack);
+        assertThat(submission.getAssignment()).isEqualTo(assignmentBack);
 
-        submission.assessment(null);
-        assertThat(submission.getAssessment()).isNull();
+        submission.assignment(null);
+        assertThat(submission.getAssignment()).isNull();
     }
 }
