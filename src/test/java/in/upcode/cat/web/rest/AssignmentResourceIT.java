@@ -8,13 +8,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import in.upcode.cat.IntegrationTest;
 import in.upcode.cat.domain.Assignment;
+import in.upcode.cat.domain.Category;
 import in.upcode.cat.repository.AssignmentRepository;
 import in.upcode.cat.service.dto.AssignmentDTO;
 import in.upcode.cat.service.mapper.AssignmentMapper;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,11 +32,17 @@ import org.springframework.test.web.servlet.MockMvc;
 @WithMockUser
 class AssignmentResourceIT {
 
-    private static final String DEFAULT_TITLE = "AAAAAAAAAA";
-    private static final String UPDATED_TITLE = "BBBBBBBBBB";
+    private static final String DEFAULT_QUESTION = "AAAAAAAAAA";
+    private static final String UPDATED_QUESTION = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final byte[] DEFAULT_IMAGE = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(1, "1");
+
+    private static final String DEFAULT_URL = "AAAAAAAAAA";
+    private static final String UPDATED_URL = "BBBBBBBBBB";
 
     private static final String DEFAULT_TECHNOLOGY = "AAAAAAAAAA";
     private static final String UPDATED_TECHNOLOGY = "BBBBBBBBBB";
@@ -45,20 +50,20 @@ class AssignmentResourceIT {
     private static final String DEFAULT_DIFFICULTY_LEVEL = "AAAAAAAAAA";
     private static final String UPDATED_DIFFICULTY_LEVEL = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_TIME_LIMIT = 1;
-    private static final Integer UPDATED_TIME_LIMIT = 2;
-
-    private static final String DEFAULT_VALIDATION_CRITERIA = "AAAAAAAAAA";
-    private static final String UPDATED_VALIDATION_CRITERIA = "BBBBBBBBBB";
-
-    private static final String DEFAULT_QUESTION = "AAAAAAAAAA";
-    private static final String UPDATED_QUESTION = "BBBBBBBBBB";
+    private static final LocalTime DEFAULT_TIME_LIMIT = LocalTime.of(0, 0);
+    private static final LocalTime UPDATED_TIME_LIMIT = LocalTime.now();
 
     private static final Integer DEFAULT_MAX_POINTS = 1;
     private static final Integer UPDATED_MAX_POINTS = 2;
 
-    private static final ZonedDateTime DEFAULT_DEADLINE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DEADLINE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final String DEFAULT_EVALUATION_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_EVALUATION_TYPE = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_DELETED_AT = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_DELETED_AT = Instant.now();
+
+    private static final boolean DEFAULT_IS_DELETED = false;
+    private static final boolean UPDATED_IS_DELETED = true;
 
     private static final String ENTITY_API_URL = "/api/assessments";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -85,8 +90,13 @@ class AssignmentResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .technology(DEFAULT_TECHNOLOGY)
             .difficultyLevel(DEFAULT_DIFFICULTY_LEVEL)
+            .image(DEFAULT_IMAGE)
+            .url(DEFAULT_URL)
+            .evaluationType(DEFAULT_EVALUATION_TYPE)
             .timeLimit(DEFAULT_TIME_LIMIT)
             .question(DEFAULT_QUESTION)
+            .deletedAt(DEFAULT_DELETED_AT)
+            .isDeleted(DEFAULT_IS_DELETED)
             .maxPoints(DEFAULT_MAX_POINTS);
         return assignment;
     }
@@ -99,12 +109,17 @@ class AssignmentResourceIT {
      */
     public static Assignment createUpdatedEntity() {
         Assignment assignment = new Assignment()
+            .question(UPDATED_QUESTION)
             .description(UPDATED_DESCRIPTION)
+            .image(UPDATED_IMAGE)
+            .url(UPDATED_URL)
             .technology(UPDATED_TECHNOLOGY)
             .difficultyLevel(UPDATED_DIFFICULTY_LEVEL)
             .timeLimit(UPDATED_TIME_LIMIT)
-            .question(UPDATED_QUESTION)
-            .maxPoints(UPDATED_MAX_POINTS);
+            .maxPoints(UPDATED_MAX_POINTS)
+            .evaluationType(UPDATED_EVALUATION_TYPE)
+            .deletedAt(UPDATED_DELETED_AT)
+            .isDeleted(UPDATED_IS_DELETED);
         return assignment;
     }
 
@@ -115,7 +130,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void createAssessment() throws Exception {
+    void createAssignment() throws Exception {
         int databaseSizeBeforeCreate = assignmentRepository.findAll().size();
         // Create the Assessment
         AssignmentDTO assignmentDTO = assignmentMapper.toDto(assignment);
@@ -127,16 +142,21 @@ class AssignmentResourceIT {
         List<Assignment> assignmentList = assignmentRepository.findAll();
         assertThat(assignmentList).hasSize(databaseSizeBeforeCreate + 1);
         Assignment testAssignment = assignmentList.get(assignmentList.size() - 1);
+        assertThat(testAssignment.getQuestion()).isEqualTo(DEFAULT_QUESTION);
         assertThat(testAssignment.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testAssignment.getLTechnology()).isEqualTo(DEFAULT_TECHNOLOGY);
+        assertThat(testAssignment.getImage()).isEqualTo(DEFAULT_IMAGE);
+        assertThat(testAssignment.getUrl()).isEqualTo(DEFAULT_URL);
+        assertThat(testAssignment.getTechnology()).isEqualTo(DEFAULT_TECHNOLOGY);
         assertThat(testAssignment.getDifficultyLevel()).isEqualTo(DEFAULT_DIFFICULTY_LEVEL);
         assertThat(testAssignment.getTimeLimit()).isEqualTo(DEFAULT_TIME_LIMIT);
-        assertThat(testAssignment.getQuestion()).isEqualTo(DEFAULT_QUESTION);
         assertThat(testAssignment.getMaxPoints()).isEqualTo(DEFAULT_MAX_POINTS);
+        assertThat(testAssignment.getEvaluationType()).isEqualTo(DEFAULT_EVALUATION_TYPE);
+        assertThat(testAssignment.getDeletedAt()).isEqualTo(DEFAULT_DELETED_AT);
+        assertThat(testAssignment.getIsDeleted()).isEqualTo(DEFAULT_IS_DELETED);
     }
 
     @Test
-    void createAssessmentWithExistingId() throws Exception {
+    void createAssignmentWithExistingId() throws Exception {
         // Create the Assessment with an existing ID
         assignment.setId("existing_id");
         AssignmentDTO assignmentDTO = assignmentMapper.toDto(assignment);
@@ -188,7 +208,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void getAllAssessments() throws Exception {
+    void getAllAssignments() throws Exception {
         // Initialize the database
         assignmentRepository.save(assignment);
 
@@ -198,16 +218,21 @@ class AssignmentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(assignment.getId())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].question").value(hasItem(DEFAULT_QUESTION)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_IMAGE))))
+            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL)))
             .andExpect(jsonPath("$.[*].technology").value(hasItem(DEFAULT_TECHNOLOGY)))
             .andExpect(jsonPath("$.[*].difficultyLevel").value(hasItem(DEFAULT_DIFFICULTY_LEVEL)))
-            .andExpect(jsonPath("$.[*].timeLimit").value(hasItem(DEFAULT_TIME_LIMIT)))
-            .andExpect(jsonPath("$.[*].question").value(hasItem(DEFAULT_QUESTION)))
-            .andExpect(jsonPath("$.[*].maxPoints").value(hasItem(DEFAULT_MAX_POINTS)));
+            .andExpect(jsonPath("$.[*].timeLimit").value(hasItem(DEFAULT_TIME_LIMIT.toString())))
+            .andExpect(jsonPath("$.[*].maxPoints").value(hasItem(DEFAULT_MAX_POINTS)))
+            .andExpect(jsonPath("$.[*].evaluationType").value(hasItem(DEFAULT_EVALUATION_TYPE)))
+            .andExpect(jsonPath("$.[*].deletedAt").value(hasItem(DEFAULT_DELETED_AT.toString())))
+            .andExpect(jsonPath("$.[*].isDeleted").value(hasItem(DEFAULT_IS_DELETED)));
     }
 
     @Test
-    void getAssessment() throws Exception {
+    void getAssignment() throws Exception {
         // Initialize the database
         assignmentRepository.save(assignment);
 
@@ -216,24 +241,28 @@ class AssignmentResourceIT {
             .perform(get(ENTITY_API_URL_ID, assignment.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.id").value(assignment.getId()))
-            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.technology").value(DEFAULT_TECHNOLOGY))
-            .andExpect(jsonPath("$.difficultyLevel").value(DEFAULT_DIFFICULTY_LEVEL))
-            .andExpect(jsonPath("$.timeLimit").value(DEFAULT_TIME_LIMIT))
-            .andExpect(jsonPath("$.question").value(DEFAULT_QUESTION))
-            .andExpect(jsonPath("$.maxPoints").value(DEFAULT_MAX_POINTS));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(assignment.getId())))
+            .andExpect(jsonPath("$.[*].question").value(hasItem(DEFAULT_QUESTION)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_IMAGE))))
+            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL)))
+            .andExpect(jsonPath("$.[*].technology").value(hasItem(DEFAULT_TECHNOLOGY)))
+            .andExpect(jsonPath("$.[*].difficultyLevel").value(hasItem(DEFAULT_DIFFICULTY_LEVEL)))
+            .andExpect(jsonPath("$.[*].timeLimit").value(hasItem(DEFAULT_TIME_LIMIT.toString())))
+            .andExpect(jsonPath("$.[*].maxPoints").value(hasItem(DEFAULT_MAX_POINTS)))
+            .andExpect(jsonPath("$.[*].evaluationType").value(hasItem(DEFAULT_EVALUATION_TYPE)))
+            .andExpect(jsonPath("$.[*].deletedAt").value(hasItem(DEFAULT_DELETED_AT.toString())))
+            .andExpect(jsonPath("$.[*].isDeleted").value(hasItem(DEFAULT_IS_DELETED)));
     }
 
     @Test
-    void getNonExistingAssessment() throws Exception {
+    void getNonExistingAssignment() throws Exception {
         // Get the assessment
         restAssessmentMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
-    void putExistingAssessment() throws Exception {
+    void putExistingAssignment() throws Exception {
         // Initialize the database
         assignmentRepository.save(assignment);
 
@@ -242,12 +271,17 @@ class AssignmentResourceIT {
         // Update the assessment
         Assignment updatedAssignment = assignmentRepository.findById(assignment.getId()).orElseThrow();
         updatedAssignment
+            .question(UPDATED_QUESTION)
             .description(UPDATED_DESCRIPTION)
+            .image(UPDATED_IMAGE)
+            .url(UPDATED_URL)
             .technology(UPDATED_TECHNOLOGY)
             .difficultyLevel(UPDATED_DIFFICULTY_LEVEL)
             .timeLimit(UPDATED_TIME_LIMIT)
-            .question(UPDATED_QUESTION)
-            .maxPoints(UPDATED_MAX_POINTS);
+            .maxPoints(UPDATED_MAX_POINTS)
+            .evaluationType(UPDATED_EVALUATION_TYPE)
+            .deletedAt(UPDATED_DELETED_AT)
+            .isDeleted(UPDATED_IS_DELETED);
         AssignmentDTO assignmentDTO = assignmentMapper.toDto(updatedAssignment);
 
         restAssessmentMockMvc
@@ -262,16 +296,21 @@ class AssignmentResourceIT {
         List<Assignment> assignmentList = assignmentRepository.findAll();
         assertThat(assignmentList).hasSize(databaseSizeBeforeUpdate);
         Assignment testAssignment = assignmentList.get(assignmentList.size() - 1);
+        assertThat(testAssignment.getQuestion()).isEqualTo(UPDATED_QUESTION);
         assertThat(testAssignment.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testAssignment.getLTechnology()).isEqualTo(UPDATED_TECHNOLOGY);
+        assertThat(testAssignment.getImage()).isEqualTo(UPDATED_IMAGE);
+        assertThat(testAssignment.getUrl()).isEqualTo(UPDATED_URL);
+        assertThat(testAssignment.getTechnology()).isEqualTo(UPDATED_TECHNOLOGY);
         assertThat(testAssignment.getDifficultyLevel()).isEqualTo(UPDATED_DIFFICULTY_LEVEL);
         assertThat(testAssignment.getTimeLimit()).isEqualTo(UPDATED_TIME_LIMIT);
-        assertThat(testAssignment.getQuestion()).isEqualTo(UPDATED_QUESTION);
         assertThat(testAssignment.getMaxPoints()).isEqualTo(UPDATED_MAX_POINTS);
+        assertThat(testAssignment.getEvaluationType()).isEqualTo(UPDATED_EVALUATION_TYPE);
+        assertThat(testAssignment.getDeletedAt()).isEqualTo(UPDATED_DELETED_AT);
+        assertThat(testAssignment.getIsDeleted()).isEqualTo(UPDATED_IS_DELETED);
     }
 
     @Test
-    void putNonExistingAssessment() throws Exception {
+    void putNonExistingAssignment() throws Exception {
         int databaseSizeBeforeUpdate = assignmentRepository.findAll().size();
         assignment.setId(UUID.randomUUID().toString());
 
@@ -293,7 +332,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void putWithIdMismatchAssessment() throws Exception {
+    void putWithIdMismatchAssignment() throws Exception {
         int databaseSizeBeforeUpdate = assignmentRepository.findAll().size();
         assignment.setId(UUID.randomUUID().toString());
 
@@ -315,7 +354,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void putWithMissingIdPathParamAssessment() throws Exception {
+    void putWithMissingIdPathParamAssignment() throws Exception {
         int databaseSizeBeforeUpdate = assignmentRepository.findAll().size();
         assignment.setId(UUID.randomUUID().toString());
 
@@ -333,7 +372,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void partialUpdateAssessmentWithPatch() throws Exception {
+    void partialUpdateAssignmentWithPatch() throws Exception {
         // Initialize the database
         assignmentRepository.save(assignment);
 
@@ -358,7 +397,7 @@ class AssignmentResourceIT {
         assertThat(assignmentList).hasSize(databaseSizeBeforeUpdate);
         Assignment testAssignment = assignmentList.get(assignmentList.size() - 1);
         assertThat(testAssignment.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testAssignment.getLTechnology()).isEqualTo(DEFAULT_TECHNOLOGY);
+        assertThat(testAssignment.getTechnology()).isEqualTo(DEFAULT_TECHNOLOGY);
         assertThat(testAssignment.getDifficultyLevel()).isEqualTo(DEFAULT_DIFFICULTY_LEVEL);
         assertThat(testAssignment.getTimeLimit()).isEqualTo(UPDATED_TIME_LIMIT);
         assertThat(testAssignment.getQuestion()).isEqualTo(UPDATED_QUESTION);
@@ -366,7 +405,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void fullUpdateAssessmentWithPatch() throws Exception {
+    void fullUpdateAssignmentWithPatch() throws Exception {
         // Initialize the database
         assignmentRepository.save(assignment);
 
@@ -397,7 +436,7 @@ class AssignmentResourceIT {
         assertThat(assignmentList).hasSize(databaseSizeBeforeUpdate);
         Assignment testAssignment = assignmentList.get(assignmentList.size() - 1);
         assertThat(testAssignment.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testAssignment.getLTechnology()).isEqualTo(UPDATED_TECHNOLOGY);
+        assertThat(testAssignment.getTechnology()).isEqualTo(UPDATED_TECHNOLOGY);
         assertThat(testAssignment.getDifficultyLevel()).isEqualTo(UPDATED_DIFFICULTY_LEVEL);
         assertThat(testAssignment.getTimeLimit()).isEqualTo(UPDATED_TIME_LIMIT);
         assertThat(testAssignment.getQuestion()).isEqualTo(UPDATED_QUESTION);
@@ -405,7 +444,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void patchNonExistingAssessment() throws Exception {
+    void patchNonExistingAssignment() throws Exception {
         int databaseSizeBeforeUpdate = assignmentRepository.findAll().size();
         assignment.setId(UUID.randomUUID().toString());
 
@@ -427,7 +466,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void patchWithIdMismatchAssessment() throws Exception {
+    void patchWithIdMismatchAssignment() throws Exception {
         int databaseSizeBeforeUpdate = assignmentRepository.findAll().size();
         assignment.setId(UUID.randomUUID().toString());
 
@@ -449,7 +488,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void patchWithMissingIdPathParamAssessment() throws Exception {
+    void patchWithMissingIdPathParamAssignment() throws Exception {
         int databaseSizeBeforeUpdate = assignmentRepository.findAll().size();
         assignment.setId(UUID.randomUUID().toString());
 
@@ -469,7 +508,7 @@ class AssignmentResourceIT {
     }
 
     @Test
-    void deleteAssessment() throws Exception {
+    void deleteAssignment() throws Exception {
         // Initialize the database
         assignmentRepository.save(assignment);
 

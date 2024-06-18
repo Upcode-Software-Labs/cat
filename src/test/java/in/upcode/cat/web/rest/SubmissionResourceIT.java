@@ -34,11 +34,6 @@ class SubmissionResourceIT {
 
     private static final byte[] DEFAULT_SCREENSHOTS = TestUtil.createByteArray(1, "0");
     private static final byte[] UPDATED_SCREENSHOTS = TestUtil.createByteArray(1, "1");
-    private static final String DEFAULT_SCREENSHOTS_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_SCREENSHOTS_CONTENT_TYPE = "image/png";
-
-    private static final String DEFAULT_VIDEO_EXPLANATION = "AAAAAAAAAA";
-    private static final String UPDATED_VIDEO_EXPLANATION = "BBBBBBBBBB";
 
     private static final String DEFAULT_TEXT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_TEXT_DESCRIPTION = "BBBBBBBBBB";
@@ -73,8 +68,6 @@ class SubmissionResourceIT {
         Submission submission = new Submission()
             .githubUrl(DEFAULT_GITHUB_URL)
             .screenshots(DEFAULT_SCREENSHOTS)
-            .screenshotsContentType(DEFAULT_SCREENSHOTS_CONTENT_TYPE)
-            .videoExplanation(DEFAULT_VIDEO_EXPLANATION)
             .textDescription(DEFAULT_TEXT_DESCRIPTION)
             .feedback(DEFAULT_FEEDBACK)
             .pointsScored(DEFAULT_POINTS_SCORED);
@@ -92,8 +85,6 @@ class SubmissionResourceIT {
         Submission submission = new Submission()
             .githubUrl(UPDATED_GITHUB_URL)
             .screenshots(UPDATED_SCREENSHOTS)
-            .screenshotsContentType(UPDATED_SCREENSHOTS_CONTENT_TYPE)
-            .videoExplanation(UPDATED_VIDEO_EXPLANATION)
             .textDescription(UPDATED_TEXT_DESCRIPTION)
             .feedback(UPDATED_FEEDBACK)
             .pointsScored(UPDATED_POINTS_SCORED);
@@ -121,8 +112,6 @@ class SubmissionResourceIT {
         Submission testSubmission = submissionList.get(submissionList.size() - 1);
         assertThat(testSubmission.getGithubUrl()).isEqualTo(DEFAULT_GITHUB_URL);
         assertThat(testSubmission.getScreenshots()).isEqualTo(DEFAULT_SCREENSHOTS);
-        assertThat(testSubmission.getScreenshotsContentType()).isEqualTo(DEFAULT_SCREENSHOTS_CONTENT_TYPE);
-        assertThat(testSubmission.getVideoExplanation()).isEqualTo(DEFAULT_VIDEO_EXPLANATION);
         assertThat(testSubmission.getTextDescription()).isEqualTo(DEFAULT_TEXT_DESCRIPTION);
         assertThat(testSubmission.getFeedback()).isEqualTo(DEFAULT_FEEDBACK);
         assertThat(testSubmission.getPointsScored()).isEqualTo(DEFAULT_POINTS_SCORED);
@@ -175,9 +164,6 @@ class SubmissionResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(submission.getId())))
             .andExpect(jsonPath("$.[*].githubUrl").value(hasItem(DEFAULT_GITHUB_URL)))
-            .andExpect(jsonPath("$.[*].screenshotsContentType").value(hasItem(DEFAULT_SCREENSHOTS_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].screenshots").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_SCREENSHOTS))))
-            .andExpect(jsonPath("$.[*].videoExplanation").value(hasItem(DEFAULT_VIDEO_EXPLANATION)))
             .andExpect(jsonPath("$.[*].textDescription").value(hasItem(DEFAULT_TEXT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].feedback").value(hasItem(DEFAULT_FEEDBACK.toString())))
             .andExpect(jsonPath("$.[*].pointsScored").value(hasItem(DEFAULT_POINTS_SCORED)));
@@ -195,9 +181,6 @@ class SubmissionResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(submission.getId()))
             .andExpect(jsonPath("$.githubUrl").value(DEFAULT_GITHUB_URL))
-            .andExpect(jsonPath("$.screenshotsContentType").value(DEFAULT_SCREENSHOTS_CONTENT_TYPE))
-            .andExpect(jsonPath("$.screenshots").value(Base64.getEncoder().encodeToString(DEFAULT_SCREENSHOTS)))
-            .andExpect(jsonPath("$.videoExplanation").value(DEFAULT_VIDEO_EXPLANATION))
             .andExpect(jsonPath("$.textDescription").value(DEFAULT_TEXT_DESCRIPTION))
             .andExpect(jsonPath("$.feedback").value(DEFAULT_FEEDBACK.toString()))
             .andExpect(jsonPath("$.pointsScored").value(DEFAULT_POINTS_SCORED));
@@ -221,8 +204,6 @@ class SubmissionResourceIT {
         updatedSubmission
             .githubUrl(UPDATED_GITHUB_URL)
             .screenshots(UPDATED_SCREENSHOTS)
-            .screenshotsContentType(UPDATED_SCREENSHOTS_CONTENT_TYPE)
-            .videoExplanation(UPDATED_VIDEO_EXPLANATION)
             .textDescription(UPDATED_TEXT_DESCRIPTION)
             .feedback(UPDATED_FEEDBACK)
             .pointsScored(UPDATED_POINTS_SCORED);
@@ -242,8 +223,6 @@ class SubmissionResourceIT {
         Submission testSubmission = submissionList.get(submissionList.size() - 1);
         assertThat(testSubmission.getGithubUrl()).isEqualTo(UPDATED_GITHUB_URL);
         assertThat(testSubmission.getScreenshots()).isEqualTo(UPDATED_SCREENSHOTS);
-        assertThat(testSubmission.getScreenshotsContentType()).isEqualTo(UPDATED_SCREENSHOTS_CONTENT_TYPE);
-        assertThat(testSubmission.getVideoExplanation()).isEqualTo(UPDATED_VIDEO_EXPLANATION);
         assertThat(testSubmission.getTextDescription()).isEqualTo(UPDATED_TEXT_DESCRIPTION);
         assertThat(testSubmission.getFeedback()).isEqualTo(UPDATED_FEEDBACK);
         assertThat(testSubmission.getPointsScored()).isEqualTo(UPDATED_POINTS_SCORED);
@@ -322,11 +301,7 @@ class SubmissionResourceIT {
         Submission partialUpdatedSubmission = new Submission();
         partialUpdatedSubmission.setId(submission.getId());
 
-        partialUpdatedSubmission
-            .screenshots(UPDATED_SCREENSHOTS)
-            .screenshotsContentType(UPDATED_SCREENSHOTS_CONTENT_TYPE)
-            .videoExplanation(UPDATED_VIDEO_EXPLANATION)
-            .pointsScored(UPDATED_POINTS_SCORED);
+        partialUpdatedSubmission.screenshots(UPDATED_SCREENSHOTS).pointsScored(UPDATED_POINTS_SCORED);
 
         restSubmissionMockMvc
             .perform(
@@ -342,8 +317,6 @@ class SubmissionResourceIT {
         Submission testSubmission = submissionList.get(submissionList.size() - 1);
         assertThat(testSubmission.getGithubUrl()).isEqualTo(DEFAULT_GITHUB_URL);
         assertThat(testSubmission.getScreenshots()).isEqualTo(UPDATED_SCREENSHOTS);
-        assertThat(testSubmission.getScreenshotsContentType()).isEqualTo(UPDATED_SCREENSHOTS_CONTENT_TYPE);
-        assertThat(testSubmission.getVideoExplanation()).isEqualTo(UPDATED_VIDEO_EXPLANATION);
         assertThat(testSubmission.getTextDescription()).isEqualTo(DEFAULT_TEXT_DESCRIPTION);
         assertThat(testSubmission.getFeedback()).isEqualTo(DEFAULT_FEEDBACK);
         assertThat(testSubmission.getPointsScored()).isEqualTo(UPDATED_POINTS_SCORED);
@@ -363,8 +336,6 @@ class SubmissionResourceIT {
         partialUpdatedSubmission
             .githubUrl(UPDATED_GITHUB_URL)
             .screenshots(UPDATED_SCREENSHOTS)
-            .screenshotsContentType(UPDATED_SCREENSHOTS_CONTENT_TYPE)
-            .videoExplanation(UPDATED_VIDEO_EXPLANATION)
             .textDescription(UPDATED_TEXT_DESCRIPTION)
             .feedback(UPDATED_FEEDBACK)
             .pointsScored(UPDATED_POINTS_SCORED);
@@ -383,8 +354,6 @@ class SubmissionResourceIT {
         Submission testSubmission = submissionList.get(submissionList.size() - 1);
         assertThat(testSubmission.getGithubUrl()).isEqualTo(UPDATED_GITHUB_URL);
         assertThat(testSubmission.getScreenshots()).isEqualTo(UPDATED_SCREENSHOTS);
-        assertThat(testSubmission.getScreenshotsContentType()).isEqualTo(UPDATED_SCREENSHOTS_CONTENT_TYPE);
-        assertThat(testSubmission.getVideoExplanation()).isEqualTo(UPDATED_VIDEO_EXPLANATION);
         assertThat(testSubmission.getTextDescription()).isEqualTo(UPDATED_TEXT_DESCRIPTION);
         assertThat(testSubmission.getFeedback()).isEqualTo(UPDATED_FEEDBACK);
         assertThat(testSubmission.getPointsScored()).isEqualTo(UPDATED_POINTS_SCORED);

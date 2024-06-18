@@ -28,10 +28,10 @@ class UserAssignmentTest {
         UserAssignment userAssignment = getUserAssessmentRandomSampleGenerator();
         Assignment assignmentBack = getAssessmentRandomSampleGenerator();
 
-        userAssignment.setAssessment(assignmentBack);
-        assertThat(userAssignment.getAssessment()).isEqualTo(assignmentBack);
+        userAssignment.setAssignment(assignmentBack);
+        assertThat(userAssignment.getAssignment()).isEqualTo(assignmentBack);
 
         userAssignment.assessment(null);
-        assertThat(userAssignment.getAssessment()).isNull();
+        assertThat(userAssignment.getAssignment()).isNull();
     }
 }

@@ -26,6 +26,10 @@ public class AssignmentDTO implements Serializable {
 
     private LocalTime timeLimit;
 
+    private byte[] image;
+
+    private String url;
+
     @NotNull
     private CategoryDTO type;
 
@@ -34,6 +38,9 @@ public class AssignmentDTO implements Serializable {
 
     @NotNull
     private Integer maxPoints;
+
+    @NotNull
+    private String evaluationType;
 
     private Instant deletedAt;
 
@@ -79,6 +86,14 @@ public class AssignmentDTO implements Serializable {
         this.timeLimit = timeLimit;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     public CategoryDTO getType() {
         return type;
     }
@@ -101,6 +116,22 @@ public class AssignmentDTO implements Serializable {
 
     public void setMaxPoints(Integer maxPoints) {
         this.maxPoints = maxPoints;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getEvaluationType() {
+        return evaluationType;
+    }
+
+    public void setEvaluationType(String evaluationType) {
+        this.evaluationType = evaluationType;
     }
 
     public Instant getDeletedAt() {
@@ -151,9 +182,12 @@ public class AssignmentDTO implements Serializable {
             ", technology='" + technology + '\'' +
             ", difficultyLevel='" + difficultyLevel + '\'' +
             ", timeLimit=" + timeLimit +
+            ", url='" + url + '\'' +
+            ", image='" + image + '\'' +
             ", type=" + type +
             ", question='" + question + '\'' +
             ", maxPoints=" + maxPoints +
+            ", evaluationType='" + evaluationType + '\'' +
             ", deletedAt=" + deletedAt +
             ", isDeleted=" + isDeleted +
             '}';
@@ -166,11 +200,14 @@ public class AssignmentDTO implements Serializable {
         assignment.setTechnology(technology);
         assignment.setDifficultyLevel(difficultyLevel);
         assignment.setTimeLimit(timeLimit);
+        assignment.setImage(image);
         assignment.setType(type.toEntity());
         assignment.setQuestion(question);
         assignment.setMaxPoints(maxPoints);
+        assignment.setEvaluationType(evaluationType);
         assignment.deletedAt(deletedAt);
         assignment.isDeleted(isDeleted);
+        assignment.url(url);
         return assignment;
     }
 }

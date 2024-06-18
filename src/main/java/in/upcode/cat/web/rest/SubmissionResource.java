@@ -161,59 +161,36 @@ public class SubmissionResource {
      * {@code GET  /submissions} : get all the submissions.
      *
      * @param pageable the pagination information.
-     * @param user the students name
-     * @param type the assessment type
+     * @param userId the students name
+     * @param typeId the assessment type
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of submissions in body.
      */
-    //    @GetMapping("")
-    //    public ResponseEntity<List<SubmissionDTO>> getAllSubmissions(
-    //        @RequestParam(required = false) String user,
-    //        @RequestParam(required = false) String type,
-    //        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    //    ) {
-    //        log.debug("REST request to get a page of Submissions based on search");
-    //
-    //        Page<SubmissionDTO> page;
-    //        HttpHeaders headers;
-    //
-    //        if (user != null && type != null) {
-    //            // Case: Both user and type parameters are provided
-    //            Optional<User> userOptional = userRepository.findOneByLoginRegexIgnoreCase(user);
-    //            Optional<Assignment> assessmentOptional = assignmentRepository.findByTypeRegexIgnoreCase(type);
-    //
-    //            if (userOptional.isPresent() && assessmentOptional.isPresent()) {
-    //                String userId = userOptional.get().getId();
-    //                String assessmentId = assessmentOptional.get().getId();
-    //                page = submissionService.findByUserIdAndAssessmentId(userId, assessmentId, pageable);
-    //            } else {
-    //                // If either user or assessment is not found, return an empty list
-    //                return ResponseEntity.ok().body(Collections.emptyList());
-    //            }
-    //        } else if (user != null) {
-    //            // Case: Only user parameter is provided
-    //            Optional<User> userOptional = userRepository.findOneByLoginRegexIgnoreCase(user);
-    //            if (userOptional.isPresent()) {
-    //                String userId = userOptional.get().getId();
-    //                page = submissionService.findByUserId(userId, pageable);
-    //            } else {
-    //                return ResponseEntity.ok().body(Collections.emptyList());
-    //            }
-    //        } else if (type != null) {
-    //            // Case: Only type parameter is provided
-    //            Optional<Assignment> assessmentOptional = assignmentRepository.findByTypeRegexIgnoreCase(type);
-    //            if (assessmentOptional.isPresent()) {
-    //                String assessmentId = assessmentOptional.get().getId();
-    //                page = submissionService.findByAssignmentId(assessmentId, pageable);
-    //            } else {
-    //                return ResponseEntity.ok().body(Collections.emptyList());
-    //            }
-    //        } else {
-    //            // Case: No parameters provided, return all submissions
-    //            page = submissionService.findAll(pageable);
-    //        }
-    //        headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-    //        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    //    }
+    @GetMapping("")
+    public ResponseEntity<List<SubmissionDTO>> getAllSubmissions(
+        @RequestParam(required = false) String userId,
+        @RequestParam(required = false) String typeId,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get a page of Submissions based on search");
+
+        Page<SubmissionDTO> page;
+        HttpHeaders headers;
+
+        if (userId != null && typeId != null) {
+            // Case: Both user and type parameters are provided
+            page = submissionService.findByUserIdAndTypeId(userId, typeId, pageable);
+        } else if (userId != null) {
+            // Case: Only user parameter is provided
+            page = submissionService.findByUserId(userId, pageable);
+        } else if (typeId != null) {
+            page = submissionService.findByTypeId(typeId, pageable);
+        } else {
+            // Case: No parameters provided, return all submissions
+            page = submissionService.findAll(pageable);
+        }
+        headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 
     /**
      * {@code GET  /submissions/search} : get all the submissions.

@@ -11,7 +11,6 @@ public class NotificationDTO implements Serializable {
     private String id;
     private UserDTO sender;
     private UserDTO recipient;
-    private NotificationType notificationType;
     private String message;
     private Instant timestamp;
     private NotificationStatus status;
@@ -39,14 +38,6 @@ public class NotificationDTO implements Serializable {
 
     public void setRecipient(UserDTO recipient) {
         this.recipient = recipient;
-    }
-
-    public NotificationType getNotificationType() {
-        return notificationType;
-    }
-
-    public void setNotificationType(NotificationType notificationType) {
-        this.notificationType = notificationType;
     }
 
     public String getMessage() {
@@ -105,8 +96,6 @@ public class NotificationDTO implements Serializable {
             sender +
             ", recipient=" +
             recipient +
-            ", notificationType=" +
-            notificationType +
             ", message='" +
             message +
             '\'' +

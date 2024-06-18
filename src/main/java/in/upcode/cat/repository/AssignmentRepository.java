@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface AssignmentRepository extends MongoRepository<Assignment, String> {
-    Page<Assignment> findByTypeRegexIgnoreCase(String type, Pageable pageable);
+    Page<Assignment> findByType_id(String type, Pageable pageable);
 
     Optional<Assignment> findByTypeRegexIgnoreCase(String type);
 }

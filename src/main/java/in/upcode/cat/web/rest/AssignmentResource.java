@@ -4,11 +4,14 @@ import in.upcode.cat.domain.Assignment;
 import in.upcode.cat.repository.AssignmentRepository;
 import in.upcode.cat.service.AssignmentService;
 import in.upcode.cat.service.dto.AssignmentDTO;
+import in.upcode.cat.service.dto.CategoryDTO;
 import in.upcode.cat.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -29,12 +33,12 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link Assignment}.
  */
 @RestController
-@RequestMapping("/api/assessments")
+@RequestMapping("/api/assignments")
 public class AssignmentResource {
 
     private final Logger log = LoggerFactory.getLogger(AssignmentResource.class);
 
-    private static final String ENTITY_NAME = "assessment";
+    private static final String ENTITY_NAME = "assignments";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -49,27 +53,57 @@ public class AssignmentResource {
     }
 
     /**
-     * {@code POST  /assessments} : Create a new assessment.
+     * {@code POST  /assignments} : Create a new assignment.
      *
      * @param assignmentDTO the assessmentDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new assessmentDTO, or with status {@code 400 (Bad Request)} if the assessment has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("")
-    public ResponseEntity<AssignmentDTO> createAssessment(@Valid @RequestBody AssignmentDTO assignmentDTO) throws URISyntaxException {
-        log.debug("REST request to save Assessment : {}", assignmentDTO);
-        if (assignmentDTO.getId() != null) {
-            throw new BadRequestAlertException("A new assessment cannot already have an ID", ENTITY_NAME, "idexists");
+    @PostMapping(value = "", consumes = "multipart/form-data")
+    public ResponseEntity<AssignmentDTO> createAssignment(
+        @RequestPart("description") String description,
+        @RequestPart("technology") String technology,
+        @RequestPart("difficultyLevel") String difficultyLevel,
+        @RequestPart("timeLimit") LocalTime timeLimit,
+        @RequestPart("image") MultipartFile image,
+        @RequestPart("assignmentType") CategoryDTO type,
+        @RequestPart("question") String question,
+        @RequestPart("maxPoints") Integer maxPoints,
+        @RequestPart("evaluationType") String evaluationType
+    ) throws URISyntaxException {
+        log.debug("REST request to save Assignment");
+
+        AssignmentDTO assignmentDTO = new AssignmentDTO();
+        assignmentDTO.setDescription(description);
+        assignmentDTO.setTechnology(technology);
+        assignmentDTO.setDifficultyLevel(difficultyLevel);
+        assignmentDTO.setTimeLimit(timeLimit);
+        assignmentDTO.setType(type);
+        assignmentDTO.setQuestion(question);
+        assignmentDTO.setMaxPoints(maxPoints);
+        assignmentDTO.setEvaluationType(evaluationType);
+
+        try {
+            byte[] imageBytes = image.getBytes();
+            assignmentDTO.setImage(imageBytes);
+        } catch (IOException e) {
+            throw new BadRequestAlertException("Failed to process image file", ENTITY_NAME, "imageprocessingerror");
         }
+
+        if (assignmentDTO.getId() != null) {
+            throw new BadRequestAlertException("A new assignment cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+
         AssignmentDTO result = assignmentService.save(assignmentDTO);
+
         return ResponseEntity
-            .created(new URI("/api/assessments/" + result.getId()))
+            .created(new URI("/api/assignments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /assessments/:id} : Updates an existing assessment.
+     * {@code PUT  /assignments/:id} : Updates an existing assessment.
      *
      * @param id the id of the assessmentDTO to save.
      * @param assignmentDTO the assessmentDTO to update.
@@ -79,7 +113,7 @@ public class AssignmentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<AssignmentDTO> updateAssessment(
+    public ResponseEntity<AssignmentDTO> updateAssignment(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody AssignmentDTO assignmentDTO
     ) throws URISyntaxException {
@@ -103,7 +137,7 @@ public class AssignmentResource {
     }
 
     /**
-     * {@code PATCH  /assessments/:id} : Partial updates given fields of an existing assessment, field will ignore if it is null
+     * {@code PATCH  /assignments/:id} : Partial updates given fields of an existing assessment, field will ignore if it is null
      *
      * @param id the id of the assessmentDTO to save.
      * @param assignmentDTO the assessmentDTO to update.
@@ -139,17 +173,17 @@ public class AssignmentResource {
     }
 
     /**
-     * {@code GET  /assessments} : get all the assessments.
+     * {@code GET  /assignments} : get all the assessments.
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of assessments in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<AssignmentDTO>> getAllAssessments(
+    public ResponseEntity<List<AssignmentDTO>> getAllAssignments(
         @RequestParam(required = false) String type,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get a page of Assessments");
+        log.debug("REST request to get a page of Assignments");
         final Page<AssignmentDTO> page;
         if (type == null) {
             page = assignmentService.findAll(pageable);
@@ -163,20 +197,20 @@ public class AssignmentResource {
     }
 
     /**
-     * {@code GET  /assessments/:id} : get the "id" assessment.
+     * {@code GET  /assignments/:id} : get the "id" assessment.
      *
      * @param id the id of the assessmentDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the assessmentDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<AssignmentDTO> getAssessment(@PathVariable("id") String id) {
+    public ResponseEntity<AssignmentDTO> getAssignment(@PathVariable("id") String id) {
         log.debug("REST request to get Assessment : {}", id);
-        Optional<AssignmentDTO> assessmentDTO = assignmentService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(assessmentDTO);
+        Optional<AssignmentDTO> assignmentDTO = assignmentService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(assignmentDTO);
     }
 
     /**
-     * {@code DELETE  /assessments/:id} : delete the "id" assessment.
+     * {@code DELETE  /assignments/:id} : delete the "id" assessment.
      *
      * @param id the id of the assessmentDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.

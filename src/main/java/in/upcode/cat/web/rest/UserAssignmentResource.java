@@ -29,7 +29,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link UserAssignment}.
  */
 @RestController
-@RequestMapping("/api/user-assessments")
+@RequestMapping("/api/user-assignments")
 public class UserAssignmentResource {
 
     private final Logger log = LoggerFactory.getLogger(UserAssignmentResource.class);
@@ -151,16 +151,6 @@ public class UserAssignmentResource {
     ) {
         log.debug("REST request to get a page of UserAssessments");
         Page<UserAssignmentDTO> page = userAssignmentService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<UserAssignmentDTO>> getUserAssessmentBySearch(
-        @RequestParam String status,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        Page<UserAssignmentDTO> page = userAssignmentService.findBySearch(status, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

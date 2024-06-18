@@ -93,7 +93,7 @@ public class AssignmentService {
      * @return a page of assessments with the specified type.
      */
     public Page<AssignmentDTO> findAssessmentsByType(String type, Pageable pageable) {
-        return assignmentRepository.findByTypeRegexIgnoreCase(type, pageable).map(assignmentMapper::toDto);
+        return assignmentRepository.findByType_id(type, pageable).map(assignmentMapper::toDto);
     }
 
     /**

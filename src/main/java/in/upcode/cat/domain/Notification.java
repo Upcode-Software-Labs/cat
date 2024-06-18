@@ -21,8 +21,6 @@ public class Notification extends AbstractAuditingEntity<String> implements Seri
     @DBRef
     private User recipient;
 
-    private NotificationType notificationType;
-
     private String message;
 
     private Instant timestamp;
@@ -72,19 +70,6 @@ public class Notification extends AbstractAuditingEntity<String> implements Seri
 
     public void setRecipient(User recipient) {
         this.recipient = recipient;
-    }
-
-    public NotificationType getNotificationType() {
-        return notificationType;
-    }
-
-    public Notification notificationType(NotificationType notificationType) {
-        this.setNotificationType(notificationType);
-        return this;
-    }
-
-    public void setNotificationType(NotificationType notificationType) {
-        this.notificationType = notificationType;
     }
 
     public String getMessage() {
@@ -155,8 +140,6 @@ public class Notification extends AbstractAuditingEntity<String> implements Seri
             sender +
             ", recipient=" +
             recipient +
-            ", notificationType=" +
-            notificationType +
             ", message='" +
             message +
             '\'' +

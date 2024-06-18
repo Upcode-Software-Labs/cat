@@ -24,7 +24,7 @@ public interface UserAssignmentMapper extends EntityMapper<UserAssignmentDTO, Us
     UserDTO toDtoUserId(User user);
 
     @Named("assignmentId")
-    @BeanMapping(ignoreByDefault = true)
+    @BeanMapping(ignoreByDefault = false)
     @Mapping(target = "id", source = "id")
     AssignmentDTO toDtoAssignmentId(Assignment assignment);
 }

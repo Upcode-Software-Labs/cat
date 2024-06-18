@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Service;
 
 /**
@@ -107,38 +108,19 @@ public class SubmissionService {
 
      * @return the list of entities.
      */
-    //    public Page<SubmissionDTO> findByAssignmentId(String type, Pageable pageable) {
-    //        return submissionRepository.findByAssignment_Id(type, pageable).map(submissionMapper::toDto);
-    //    }
+    public Page<SubmissionDTO> findByTypeId(String type, Pageable pageable) {
+        return submissionRepository.findByForAssignment_Assignment_Type_Id(type, pageable).map(submissionMapper::toDto);
+    }
 
-    /**
-     * Get the submissions based on search.
-     *
-     * @param pageable the pagination information.
-     * @param user the name of student
+    public Page<SubmissionDTO> findByUserId(String user, Pageable pageable) {
+        return submissionRepository.findByForAssignment_User_Id(user, pageable).map(submissionMapper::toDto);
+    }
 
-     * @return the list of entities.
-     */
-
-    //    public Page<SubmissionDTO> findByUserId(String user, Pageable pageable) {
-    //        return submissionRepository.findByUser_Id(user, pageable).map(submissionMapper::toDto);
-    //    }
-    //
-    //    public Page<SubmissionDTO> findByUserIdAndAssessmentId(String userId, String assessmentId, Pageable pageable) {
-    //        return submissionRepository.findByUserIdAndAssignmentId(userId, assessmentId, pageable).map(submissionMapper::toDto);
-    //    }
-
-    /**
-     * Get the submissions based on search.
-     *
-     * @param pageable the pagination information.
-     * @param status the name of student
-
-     * @return the list of entities.
-     */
-    //    public Page<SubmissionDTO> findByForAssessmentId(String status, Pageable pageable) {
-    //        return submissionRepository.findByForAssignment_Id(status, pageable);
-    //    }
+    public Page<SubmissionDTO> findByUserIdAndTypeId(String userId, String typeId, Pageable pageable) {
+        return submissionRepository
+            .findByForAssignment_User_IdAndForAssignment_Assignment_Type_Id(userId, typeId, pageable)
+            .map(submissionMapper::toDto);
+    }
 
     /**
      * Get one submission by id.
