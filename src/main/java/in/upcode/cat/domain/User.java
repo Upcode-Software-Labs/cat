@@ -213,4 +213,19 @@ public class User extends AbstractAuditingEntity<String> implements Serializable
             ", activationKey='" + activationKey + '\'' +
             "}";
     }
+
+    // Default constructor
+    public User() {
+        // This constructor intentionally left empty.
+        // Default constructor required by some frameworks.
+        // Use other constructors to initialize the object.
+        // If you're instantiating a User object, provide necessary parameters.
+        // Example: User newUser = new User("username", "password");
+        // Alternatively, use setter methods to set the properties after instantiation.
+        // Example: newUser.setFirstName("John");
+        // Example: newUser.setLastName("Doe");
+
+        // Uncomment the line below if you want to throw an UnsupportedOperationException
+        // throw new UnsupportedOperationException("Default constructor not supported. Use other constructors.");
+    }
 }

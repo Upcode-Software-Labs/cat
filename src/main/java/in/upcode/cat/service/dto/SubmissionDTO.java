@@ -2,6 +2,8 @@ package in.upcode.cat.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -17,20 +19,19 @@ public class SubmissionDTO implements Serializable {
 
     private byte[] screenshots;
 
-    private String screenshotsContentType;
-    private String videoExplanation;
-
     private String textDescription;
+
+    private Instant timeTaken;
 
     private String feedback;
 
     private Integer pointsScored;
 
-    private UserAssessmentDTO forAssignment;
+    private UserAssignmentDTO forAssignment;
 
     private UserDTO user;
 
-    private AssessmentDTO assessment;
+    private AssignmentDTO assignment;
 
     public String getId() {
         return id;
@@ -56,28 +57,20 @@ public class SubmissionDTO implements Serializable {
         this.screenshots = screenshots;
     }
 
-    public String getScreenshotsContentType() {
-        return screenshotsContentType;
-    }
-
-    public void setScreenshotsContentType(String screenshotsContentType) {
-        this.screenshotsContentType = screenshotsContentType;
-    }
-
-    public String getVideoExplanation() {
-        return videoExplanation;
-    }
-
-    public void setVideoExplanation(String videoExplanation) {
-        this.videoExplanation = videoExplanation;
-    }
-
     public String getTextDescription() {
         return textDescription;
     }
 
     public void setTextDescription(String textDescription) {
         this.textDescription = textDescription;
+    }
+
+    public Instant getTimeTaken() {
+        return timeTaken;
+    }
+
+    public void setTimeTaken(Instant timeTaken) {
+        this.timeTaken = timeTaken;
     }
 
     public String getFeedback() {
@@ -96,11 +89,11 @@ public class SubmissionDTO implements Serializable {
         this.pointsScored = pointsScored;
     }
 
-    public UserAssessmentDTO getForAssignment() {
+    public UserAssignmentDTO getForAssignment() {
         return forAssignment;
     }
 
-    public void setForAssignment(UserAssessmentDTO forAssignment) {
+    public void setForAssignment(UserAssignmentDTO forAssignment) {
         this.forAssignment = forAssignment;
     }
 
@@ -112,13 +105,89 @@ public class SubmissionDTO implements Serializable {
         this.user = user;
     }
 
-    public AssessmentDTO getAssessment() {
-        return assessment;
+    public AssignmentDTO getAssignment() {
+        return assignment;
     }
 
-    public void setAssessment(AssessmentDTO assessment) {
-        this.assessment = assessment;
+    public void setAssignment(AssignmentDTO assignment) {
+        this.assignment = assignment;
     }
+
+    // @Override
+    // public int hashCode() {
+    //     final int prime = 31;
+    //     int result = 1;
+    //     result = prime * result + ((id == null) ? 0 : id.hashCode());
+    //     result = prime * result + ((githubUrl == null) ? 0 : githubUrl.hashCode());
+    //     result = prime * result + Arrays.hashCode(screenshots);
+    //     result = prime * result + ((textDescription == null) ? 0 : textDescription.hashCode());
+    //     result = prime * result + ((timeTaken == null) ? 0 : timeTaken.hashCode());
+    //     result = prime * result + ((feedback == null) ? 0 : feedback.hashCode());
+    //     result = prime * result + ((pointsScored == null) ? 0 : pointsScored.hashCode());
+    //     result = prime * result + ((forAssignment == null) ? 0 : forAssignment.hashCode());
+    //     result = prime * result + ((user == null) ? 0 : user.hashCode());
+    //     result = prime * result + ((assignment == null) ? 0 : assignment.hashCode());
+    //     return result;
+    // }
+
+    // @Override
+    // public boolean equals(Object obj) {
+    //     if (this == obj)
+    //         return true;
+    //     if (obj == null)
+    //         return false;
+    //     if (getClass() != obj.getClass())
+    //         return false;
+    //     SubmissionDTO other = (SubmissionDTO) obj;
+    //     if (id == null) {
+    //         if (other.id != null)
+    //             return false;
+    //     } else if (!id.equals(other.id))
+    //         return false;
+    //     if (githubUrl == null) {
+    //         if (other.githubUrl != null)
+    //             return false;
+    //     } else if (!githubUrl.equals(other.githubUrl))
+    //         return false;
+    //     if (!Arrays.equals(screenshots, other.screenshots))
+    //         return false;
+    //     if (textDescription == null) {
+    //         if (other.textDescription != null)
+    //             return false;
+    //     } else if (!textDescription.equals(other.textDescription))
+    //         return false;
+    //     if (timeTaken == null) {
+    //         if (other.timeTaken != null)
+    //             return false;
+    //     } else if (!timeTaken.equals(other.timeTaken))
+    //         return false;
+    //     if (feedback == null) {
+    //         if (other.feedback != null)
+    //             return false;
+    //     } else if (!feedback.equals(other.feedback))
+    //         return false;
+    //     if (pointsScored == null) {
+    //         if (other.pointsScored != null)
+    //             return false;
+    //     } else if (!pointsScored.equals(other.pointsScored))
+    //         return false;
+    //     if (forAssignment == null) {
+    //         if (other.forAssignment != null)
+    //             return false;
+    //     } else if (!forAssignment.equals(other.forAssignment))
+    //         return false;
+    //     if (user == null) {
+    //         if (other.user != null)
+    //             return false;
+    //     } else if (!user.equals(other.user))
+    //         return false;
+    //     if (assignment == null) {
+    //         if (other.assignment != null)
+    //             return false;
+    //     } else if (!assignment.equals(other.assignment))
+    //         return false;
+    //     return true;
+    // }
 
     @Override
     public boolean equals(Object o) {
@@ -141,20 +210,30 @@ public class SubmissionDTO implements Serializable {
         return Objects.hash(this.id);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "SubmissionDTO{" +
-            "id='" + getId() + "'" +
-            ", githubUrl='" + getGithubUrl() + "'" +
-            ", screenshots='" + getScreenshots() + "'" +
-            ", videoExplanation='" + getVideoExplanation() + "'" +
-            ", textDescription='" + getTextDescription() + "'" +
-            ", feedback='" + getFeedback() + "'" +
-            ", pointsScored=" + getPointsScored() +
-            ", forAssignment=" + getForAssignment() +
-            ", user=" + getUser() +
-            ", assessment=" + getAssessment() +
-            "}";
+        return (
+            "SubmissionDTO [id=" +
+            id +
+            ", githubUrl=" +
+            githubUrl +
+            ", screenshots=" +
+            Arrays.toString(screenshots) +
+            ", textDescription=" +
+            textDescription +
+            ", timeTaken=" +
+            timeTaken +
+            ", feedback=" +
+            feedback +
+            ", pointsScored=" +
+            pointsScored +
+            ", forAssignment=" +
+            forAssignment +
+            ", user=" +
+            user +
+            ", assignment=" +
+            assignment +
+            "]"
+        );
     }
 }

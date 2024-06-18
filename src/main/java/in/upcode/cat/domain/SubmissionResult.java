@@ -30,7 +30,7 @@ public class SubmissionResult implements Serializable {
 
     @DBRef
     @Field("submission")
-    @JsonIgnoreProperties(value = { "forAssignment", "user", "assessment" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "forAssignment", "user", "assignment" }, allowSetters = true)
     private Submission submission;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
