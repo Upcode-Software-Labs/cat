@@ -156,7 +156,7 @@
     "merge-jsons-webpack-plugin": "2.0.1",
     "mini-css-extract-plugin": "2.7.6",
     "postcss-loader": "7.3.3",
-    "prettier": "3.1.0",
+    "prettier": "^3.1.0",
     "prettier-plugin-java": "2.5.0",
     "prettier-plugin-packagejson": "2.4.7",
     "react-infinite-scroll-component": "6.1.0",
