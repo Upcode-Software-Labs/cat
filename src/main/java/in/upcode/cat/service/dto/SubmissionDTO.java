@@ -29,9 +29,9 @@ public class SubmissionDTO implements Serializable {
 
     private Instant timeTaken;
 
-    //    private UserDTO user;
-    //
-    //    private AssignmentDTO assessment;
+    private UserDTO user;
+
+    private AssignmentDTO assignment;
 
     public String getId() {
         return id;
@@ -97,21 +97,21 @@ public class SubmissionDTO implements Serializable {
         this.timeTaken = timeTaken;
     }
 
-    //    public UserDTO getUser() {
-    //        return user;
-    //    }
-    //
-    //    public void setUser(UserDTO user) {
-    //        this.user = user;
-    //    }
-    //
-    //    public AssignmentDTO getAssessment() {
-    //        return assessment;
-    //    }
-    //
-    //    public void setAssessment(AssignmentDTO assessment) {
-    //        this.assessment = assessment;
-    //    }
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
+    public AssignmentDTO getAssignment() {
+        return assignment;
+    }
+
+    public void setAssignment(AssignmentDTO assignment) {
+        this.assignment = assignment;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -147,8 +147,8 @@ public class SubmissionDTO implements Serializable {
             ", pointsScored=" + pointsScored +
             ", forAssignment=" + forAssignment +
             ", timeTaken=" + timeTaken +
-//            ", user=" + user +
-//            ", assessment=" + assessment +
+            ", user=" + user +
+            ", assignment=" + assignment +
             '}';
     }
 }

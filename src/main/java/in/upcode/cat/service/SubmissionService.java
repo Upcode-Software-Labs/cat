@@ -109,17 +109,15 @@ public class SubmissionService {
      * @return the list of entities.
      */
     public Page<SubmissionDTO> findByTypeId(String type, Pageable pageable) {
-        return submissionRepository.findByForAssignment_Assignment_Type_Id(type, pageable).map(submissionMapper::toDto);
+        return submissionRepository.findByAssignment_Type_Id(type, pageable).map(submissionMapper::toDto);
     }
 
     public Page<SubmissionDTO> findByUserId(String user, Pageable pageable) {
-        return submissionRepository.findByForAssignment_User_Id(user, pageable).map(submissionMapper::toDto);
+        return submissionRepository.findByUser_Id(user, pageable).map(submissionMapper::toDto);
     }
 
     public Page<SubmissionDTO> findByUserIdAndTypeId(String userId, String typeId, Pageable pageable) {
-        return submissionRepository
-            .findByForAssignment_User_IdAndForAssignment_Assignment_Type_Id(userId, typeId, pageable)
-            .map(submissionMapper::toDto);
+        return submissionRepository.findByUser_IdAndAssignment_Type_Id(userId, typeId, pageable).map(submissionMapper::toDto);
     }
 
     /**

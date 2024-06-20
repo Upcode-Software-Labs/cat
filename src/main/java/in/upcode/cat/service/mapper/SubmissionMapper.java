@@ -16,6 +16,8 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface SubmissionMapper extends EntityMapper<SubmissionDTO, Submission> {
     @Mapping(target = "forAssignment", source = "forAssignment", qualifiedByName = "userAssessmentId")
+    @Mapping(target = "user", source = "user", qualifiedByName = "userId")
+    @Mapping(target = "assignment", source = "assignment", qualifiedByName = "assignmentId")
     SubmissionDTO toDto(Submission s);
 
     @Named("userAssessmentId")
@@ -24,7 +26,16 @@ public interface SubmissionMapper extends EntityMapper<SubmissionDTO, Submission
     @Mapping(target = "status", source = "status")
     @Mapping(target = "assignedAt", source = "assignedAt")
     @Mapping(target = "deadline", source = "deadline")
-    @Mapping(target = "user", source = "user")
-    @Mapping(target = "assignment", source = "assignment")
     UserAssignmentDTO toDtoUserAssessmentId(UserAssignment userAssignment);
+
+    @Named("userId")
+    @BeanMapping(ignoreByDefault = false)
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "login", source = "login")
+    UserDTO toDtoUserId(User user);
+
+    @Named("assignmentId")
+    @BeanMapping(ignoreByDefault = false)
+    @Mapping(target = "id", source = "id")
+    AssignmentDTO toDtoAssignmentId(Assignment assignment);
 }

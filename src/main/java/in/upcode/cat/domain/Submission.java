@@ -42,8 +42,16 @@ public class Submission extends AbstractAuditingEntity<String> implements Serial
     private Instant timeTaken;
 
     @DBRef
+    @Field
+    private User user;
+
+    @DBRef
+    @Field
+    private Assignment assignment;
+
+    @DBRef
     @Field("forAssignment")
-    //@JsonIgnoreProperties(value = { "submittedByUser", "user", "assessment" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "assignment" }, allowSetters = true)
     private UserAssignment forAssignment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -140,6 +148,32 @@ public class Submission extends AbstractAuditingEntity<String> implements Serial
         this.pointsScored = pointsScored;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public Submission user(User user) {
+        this.setUser(user);
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Assignment getAssignment() {
+        return assignment;
+    }
+
+    public Submission assignment(Assignment assignment) {
+        this.setAssignment(assignment);
+        return this;
+    }
+
+    public void setAssignment(Assignment assignment) {
+        this.assignment = assignment;
+    }
+
     public UserAssignment getForAssignment() {
         return this.forAssignment;
     }
@@ -194,6 +228,10 @@ public class Submission extends AbstractAuditingEntity<String> implements Serial
             pointsScored +
             ", timeTaken=" +
             timeTaken +
+            ", user=" +
+            user +
+            ", assignment=" +
+            assignment +
             ", forAssignment=" +
             forAssignment +
             '}'
