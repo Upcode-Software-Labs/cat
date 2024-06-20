@@ -92,7 +92,7 @@ export const Submission = () => {
   return (
     <div>
       <h2 id="submission-heading" data-cy="SubmissionHeading">
-        <Translate contentKey="catApp.submission.home.title">Submissions</Translate>
+        <Translate contentKey="catApp.submission.home.title">Submissions!!</Translate>
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} />{' '}
@@ -144,7 +144,7 @@ export const Submission = () => {
                   <Translate contentKey="catApp.submission.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="catApp.submission.assessment">Assessment</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="catApp.submission.assignment">Assessment</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -182,14 +182,14 @@ export const Submission = () => {
                   <td>{submission.pointsScored}</td>
                   <td>
                     {submission.forAssignment ? (
-                      <Link to={`/user-assessment/${submission.forAssignment.id}`}>{submission.forAssignment.id}</Link>
+                      <Link to={`/user-assignment/${submission.forAssignment.id}`}>{submission.forAssignment.id}</Link>
                     ) : (
                       ''
                     )}
                   </td>
                   <td>{submission.user ? submission.user.id : ''}</td>
                   <td>
-                    {submission.assessment ? <Link to={`/assessment/${submission.assessment.id}`}>{submission.assessment.id}</Link> : ''}
+                    {submission.assignment ? <Link to={`/assignment/${submission.assignment.id}`}>{submission.assignment.id}</Link> : ''}
                   </td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">

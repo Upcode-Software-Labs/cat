@@ -3,8 +3,8 @@ import { Route } from 'react-router-dom';
 
 import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
 
-import Assessment from './assessment';
-import UserAssessment from './user-assessment';
+import Assessment from './assignment';
+import UserAssessment from './user-assignment';
 import Submission from './submission';
 import Question from './question';
 import ValidationRule from './validation-rule';
@@ -17,8 +17,8 @@ export default () => {
     <div>
       <ErrorBoundaryRoutes>
         {/* prettier-ignore */}
-        <Route path="assessment/*" element={<Assessment />} />
-        <Route path="user-assessment/*" element={<UserAssessment />} />
+        <Route path="assignment/*" element={<Assessment />} />
+        <Route path="user-assignment/*" element={<UserAssessment />} />
         <Route path="submission/*" element={<Submission />} />
         <Route path="question/*" element={<Question />} />
         <Route path="validation-rule/*" element={<ValidationRule />} />

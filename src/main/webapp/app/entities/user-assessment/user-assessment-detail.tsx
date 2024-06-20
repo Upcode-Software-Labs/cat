@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntity } from './user-assessment.reducer';
+import { getEntity } from './user-assignment.reducer';
 
 export const UserAssessmentDetail = () => {
   const dispatch = useAppDispatch();
@@ -18,12 +18,12 @@ export const UserAssessmentDetail = () => {
     dispatch(getEntity(id));
   }, []);
 
-  const userAssessmentEntity = useAppSelector(state => state.userAssessment.entity);
+  const userAssessmentEntity = useAppSelector(state => state.userAssignment.entity);
   return (
     <Row>
       <Col md="8">
         <h2 data-cy="userAssessmentDetailsHeading">
-          <Translate contentKey="catApp.userAssessment.detail.title">UserAssessment</Translate>
+          <Translate contentKey="catApp.userAssignment.detail.title">UserAssessment</Translate>
         </h2>
         <dl className="jh-entity-details">
           <dt>
@@ -34,13 +34,13 @@ export const UserAssessmentDetail = () => {
           <dd>{userAssessmentEntity.id}</dd>
           <dt>
             <span id="status">
-              <Translate contentKey="catApp.userAssessment.status">Status</Translate>
+              <Translate contentKey="catApp.userAssignment.status">Status</Translate>
             </span>
           </dt>
           <dd>{userAssessmentEntity.status}</dd>
           <dt>
             <span id="assignedAt">
-              <Translate contentKey="catApp.userAssessment.assignedAt">Assigned At</Translate>
+              <Translate contentKey="catApp.userAssignment.assignedAt">Assigned At</Translate>
             </span>
           </dt>
           <dd>
@@ -50,7 +50,7 @@ export const UserAssessmentDetail = () => {
           </dd>
           <dt>
             <span id="deadline">
-              <Translate contentKey="catApp.userAssessment.deadline">Deadline</Translate>
+              <Translate contentKey="catApp.userAssignment.deadline">Deadline</Translate>
             </span>
           </dt>
           <dd>
@@ -59,26 +59,26 @@ export const UserAssessmentDetail = () => {
             ) : null}
           </dd>
           <dt>
-            <Translate contentKey="catApp.userAssessment.submittedByUser">Submitted By User</Translate>
+            <Translate contentKey="catApp.userAssignment.submittedByUser">Submitted By User</Translate>
           </dt>
           <dd>{userAssessmentEntity.submittedByUser ? userAssessmentEntity.submittedByUser.id : ''}</dd>
           <dt>
-            <Translate contentKey="catApp.userAssessment.user">User</Translate>
+            <Translate contentKey="catApp.userAssignment.user">User</Translate>
           </dt>
           <dd>{userAssessmentEntity.user ? userAssessmentEntity.user.id : ''}</dd>
           <dt>
-            <Translate contentKey="catApp.userAssessment.assessment">Assessment</Translate>
+            <Translate contentKey="catApp.userAssignment.assignment">Assessment</Translate>
           </dt>
-          <dd>{userAssessmentEntity.assessment ? userAssessmentEntity.assessment.id : ''}</dd>
+          <dd>{userAssessmentEntity.assignment ? userAssessmentEntity.assignment.id : ''}</dd>
         </dl>
-        <Button tag={Link} to="/user-assessment" replace color="info" data-cy="entityDetailsBackButton">
+        <Button tag={Link} to="/user-assignment" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.back">Back</Translate>
           </span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/user-assessment/${userAssessmentEntity.id}/edit`} replace color="primary">
+        <Button tag={Link} to={`/user-assignment/${userAssessmentEntity.id}/edit`} replace color="primary">
           <FontAwesomeIcon icon="pencil-alt" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.edit">Edit</Translate>

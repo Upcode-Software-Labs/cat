@@ -10,29 +10,19 @@ public class SubmissionTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Submission getSubmissionSample1() {
-        return new Submission()
-            .id("id1")
-            .githubUrl("githubUrl1")
-            .videoExplanation("videoExplanation1")
-            .textDescription("textDescription1")
-            .pointsScored(1);
+        return new Submission().id("id1").githubUrl("githubUrl1").textDescription("textDescription1").feedback("feedback1").pointsScored(1);
     }
 
     public static Submission getSubmissionSample2() {
-        return new Submission()
-            .id("id2")
-            .githubUrl("githubUrl2")
-            .videoExplanation("videoExplanation2")
-            .textDescription("textDescription2")
-            .pointsScored(2);
+        return new Submission().id("id2").githubUrl("githubUrl2").textDescription("textDescription2").feedback("feedback1").pointsScored(2);
     }
 
     public static Submission getSubmissionRandomSampleGenerator() {
         return new Submission()
             .id(UUID.randomUUID().toString())
             .githubUrl(UUID.randomUUID().toString())
-            .videoExplanation(UUID.randomUUID().toString())
             .textDescription(UUID.randomUUID().toString())
+            .feedback(UUID.randomUUID().toString())
             .pointsScored(intCount.incrementAndGet());
     }
 }

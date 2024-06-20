@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import sinon from 'sinon';
 
 import { EntityState } from 'app/shared/reducers/reducer.utils';
-import { IUserAssessment, defaultValue } from 'app/shared/model/user-assessment.model';
+import { IUserAssessment, defaultValue } from 'app/shared/model/user-assignment.model';
 import reducer, {
   createEntity,
   deleteEntity,
@@ -14,7 +14,7 @@ import reducer, {
   updateEntity,
   partialUpdateEntity,
   reset,
-} from './user-assessment.reducer';
+} from './user-assignment.reducer';
 
 describe('Entities reducer tests', () => {
   function isEmpty(element): boolean {

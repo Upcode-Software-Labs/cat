@@ -92,9 +92,9 @@ export const SubmissionDetail = () => {
           </dt>
           <dd>{submissionEntity.user ? submissionEntity.user.id : ''}</dd>
           <dt>
-            <Translate contentKey="catApp.submission.assessment">Assessment</Translate>
+            <Translate contentKey="catApp.submission.assignment">Assessment</Translate>
           </dt>
-          <dd>{submissionEntity.assessment ? submissionEntity.assessment.id : ''}</dd>
+          <dd>{submissionEntity.assignment ? submissionEntity.assignment.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/submission" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

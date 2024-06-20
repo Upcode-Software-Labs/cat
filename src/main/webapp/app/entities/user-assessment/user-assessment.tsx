@@ -9,7 +9,7 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.cons
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntities } from './user-assessment.reducer';
+import { getEntities } from './user-assignment.reducer';
 
 export const UserAssessment = () => {
   const dispatch = useAppDispatch();
@@ -21,9 +21,9 @@ export const UserAssessment = () => {
     overridePaginationStateWithQueryParams(getPaginationState(pageLocation, ITEMS_PER_PAGE, 'id'), pageLocation.search),
   );
 
-  const userAssessmentList = useAppSelector(state => state.userAssessment.entities);
-  const loading = useAppSelector(state => state.userAssessment.loading);
-  const totalItems = useAppSelector(state => state.userAssessment.totalItems);
+  const userAssignmentList = useAppSelector(state => state.userAssignment.entities);
+  const loading = useAppSelector(state => state.userAssignment.loading);
+  const totalItems = useAppSelector(state => state.userAssignment.totalItems);
 
   const getAllEntities = () => {
     dispatch(
@@ -92,84 +92,84 @@ export const UserAssessment = () => {
 
   return (
     <div>
-      <h2 id="user-assessment-heading" data-cy="UserAssessmentHeading">
-        <Translate contentKey="catApp.userAssessment.home.title">User Assessments</Translate>
+      <h2 id="user-assignment-heading" data-cy="UserAssessmentHeading">
+        <Translate contentKey="catApp.userAssignment.home.title">User Assessments</Translate>
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="catApp.userAssessment.home.refreshListLabel">Refresh List</Translate>
+            <Translate contentKey="catApp.userAssignment.home.refreshListLabel">Refresh List</Translate>
           </Button>
-          <Link to="/user-assessment/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+          <Link to="/user-assignment/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
             &nbsp;
-            <Translate contentKey="catApp.userAssessment.home.createLabel">Create new User Assessment</Translate>
+            <Translate contentKey="catApp.userAssignment.home.createLabel">Create new User Assessment</Translate>
           </Link>
         </div>
       </h2>
       <div className="table-responsive">
-        {userAssessmentList && userAssessmentList.length > 0 ? (
+        {userAssignmentList && userAssignmentList.length > 0 ? (
           <Table responsive>
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="catApp.userAssessment.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
+                  <Translate contentKey="catApp.userAssignment.id">ID</Translate> <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
                 <th className="hand" onClick={sort('status')}>
-                  <Translate contentKey="catApp.userAssessment.status">Status</Translate>{' '}
+                  <Translate contentKey="catApp.userAssignment.status">Status</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('status')} />
                 </th>
                 <th className="hand" onClick={sort('assignedAt')}>
-                  <Translate contentKey="catApp.userAssessment.assignedAt">Assigned At</Translate>{' '}
+                  <Translate contentKey="catApp.userAssignment.assignedAt">Assigned At</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('assignedAt')} />
                 </th>
                 <th className="hand" onClick={sort('deadline')}>
-                  <Translate contentKey="catApp.userAssessment.deadline">Deadline</Translate>{' '}
+                  <Translate contentKey="catApp.userAssignment.deadline">Deadline</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('deadline')} />
                 </th>
                 <th>
-                  <Translate contentKey="catApp.userAssessment.submittedByUser">Submitted By User</Translate>{' '}
+                  <Translate contentKey="catApp.userAssignment.submittedByUser">Submitted By User</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="catApp.userAssessment.user">User</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="catApp.userAssignment.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="catApp.userAssessment.assessment">Assessment</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="catApp.userAssignment.assignment">Assessment</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {userAssessmentList.map((userAssessment, i) => (
+              {userAssignmentList.map((userAssignment, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
-                    <Button tag={Link} to={`/user-assessment/${userAssessment.id}`} color="link" size="sm">
-                      {userAssessment.id}
+                    <Button tag={Link} to={`/user-assignment/${userAssignment.id}`} color="link" size="sm">
+                      {userAssignment.id}
                     </Button>
                   </td>
                   <td>
-                    <Translate contentKey={`catApp.AssessmentStatus.${userAssessment.status}`} />
+                    <Translate contentKey={`catApp.AssessmentStatus.${userAssignment.status}`} />
                   </td>
                   <td>
-                    {userAssessment.assignedAt ? (
-                      <TextFormat type="date" value={userAssessment.assignedAt} format={APP_DATE_FORMAT} />
+                    {userAssignment.assignedAt ? (
+                      <TextFormat type="date" value={userAssignment.assignedAt} format={APP_DATE_FORMAT} />
                     ) : null}
                   </td>
                   <td>
-                    {userAssessment.deadline ? <TextFormat type="date" value={userAssessment.deadline} format={APP_DATE_FORMAT} /> : null}
+                    {userAssignment.deadline ? <TextFormat type="date" value={userAssignment.deadline} format={APP_DATE_FORMAT} /> : null}
                   </td>
-                  <td>{userAssessment.submittedByUser ? userAssessment.submittedByUser.id : ''}</td>
-                  <td>{userAssessment.user ? userAssessment.user.id : ''}</td>
+                  <td>{userAssignment.submittedByUser ? userAssignment.submittedByUser.id : ''}</td>
+                  <td>{userAssignment.user ? userAssignment.user.id : ''}</td>
                   <td>
-                    {userAssessment.assessment ? (
-                      <Link to={`/assessment/${userAssessment.assessment.id}`}>{userAssessment.assessment.id}</Link>
+                    {userAssignment.assignment ? (
+                      <Link to={`/assignment/${userAssignment.assignment.id}`}>{userAssignment.assignment.id}</Link>
                     ) : (
                       ''
                     )}
                   </td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`/user-assessment/${userAssessment.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                      <Button tag={Link} to={`/user-assignment/${userAssignment.id}`} color="info" size="sm" data-cy="entityDetailsButton">
                         <FontAwesomeIcon icon="eye" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.view">View</Translate>
@@ -177,7 +177,7 @@ export const UserAssessment = () => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`/user-assessment/${userAssessment.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`/user-assignment/${userAssignment.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
                         size="sm"
                         data-cy="entityEditButton"
@@ -189,7 +189,7 @@ export const UserAssessment = () => {
                       </Button>
                       <Button
                         onClick={() =>
-                          (window.location.href = `/user-assessment/${userAssessment.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`)
+                          (window.location.href = `/user-assignment/${userAssignment.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`)
                         }
                         color="danger"
                         size="sm"
@@ -209,13 +209,13 @@ export const UserAssessment = () => {
         ) : (
           !loading && (
             <div className="alert alert-warning">
-              <Translate contentKey="catApp.userAssessment.home.notFound">No User Assessments found</Translate>
+              <Translate contentKey="catApp.userAssignment.home.notFound">No User Assessments found</Translate>
             </div>
           )
         )}
       </div>
       {totalItems ? (
-        <div className={userAssessmentList && userAssessmentList.length > 0 ? '' : 'd-none'}>
+        <div className={userAssignmentList && userAssignmentList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
             <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
           </div>

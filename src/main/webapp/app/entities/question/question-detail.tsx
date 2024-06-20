@@ -56,9 +56,9 @@ export const QuestionDetail = () => {
           </dt>
           <dd>{questionEntity.points}</dd>
           <dt>
-            <Translate contentKey="catApp.question.assessment">Assessment</Translate>
+            <Translate contentKey="catApp.question.assignment">Assessment</Translate>
           </dt>
-          <dd>{questionEntity.assessment ? questionEntity.assessment.id : ''}</dd>
+          <dd>{questionEntity.assignment ? questionEntity.assignment.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/question" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

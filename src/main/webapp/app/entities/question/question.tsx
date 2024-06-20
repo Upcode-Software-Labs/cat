@@ -104,7 +104,7 @@ export const Question = () => {
                   <FontAwesomeIcon icon={getSortIconByFieldName('points')} />
                 </th>
                 <th>
-                  <Translate contentKey="catApp.question.assessment">Assessment</Translate> <FontAwesomeIcon icon="sort" />
+                  <Translate contentKey="catApp.question.assignment">Assessment</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -121,7 +121,7 @@ export const Question = () => {
                   <td>{question.codeSnippet}</td>
                   <td>{question.resources}</td>
                   <td>{question.points}</td>
-                  <td>{question.assessment ? <Link to={`/assessment/${question.assessment.id}`}>{question.assessment.id}</Link> : ''}</td>
+                  <td>{question.assignment ? <Link to={`/assignment/${question.assignment.id}`}>{question.assignment.id}</Link> : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/question/${question.id}`} color="info" size="sm" data-cy="entityDetailsButton">

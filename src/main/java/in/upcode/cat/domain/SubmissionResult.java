@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 @Document(collection = "submission_result")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class SubmissionResult implements Serializable {
+public class SubmissionResult extends AbstractAuditingEntity<String> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,6 +35,7 @@ public class SubmissionResult implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
+    @Override
     public String getId() {
         return this.id;
     }

@@ -1,5 +1,5 @@
-import assessment from 'app/entities/assessment/assessment.reducer';
-import userAssessment from 'app/entities/user-assessment/user-assessment.reducer';
+import assignment from 'app/entities/assignment/assignment.reducer';
+import userAssignment from 'app/entities/user-assignment/user-assignment.reducer';
 import submission from 'app/entities/submission/submission.reducer';
 import question from 'app/entities/question/question.reducer';
 import validationRule from 'app/entities/validation-rule/validation-rule.reducer';
@@ -8,8 +8,8 @@ import auditLog from 'app/entities/audit-log/audit-log.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const entitiesReducers = {
-  assessment,
-  userAssessment,
+  assignment,
+  userAssignment,
   submission,
   question,
   validationRule,

@@ -11,8 +11,8 @@ import {
 } from '../../support/entity';
 
 describe('Assessment e2e test', () => {
-  const assessmentPageUrl = '/assessment';
-  const assessmentPageUrlPattern = new RegExp('/assessment(\\?.*)?$');
+  const assessmentPageUrl = '/assignment';
+  const assessmentPageUrlPattern = new RegExp('/assignment(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const assessmentSample = {
@@ -24,7 +24,7 @@ describe('Assessment e2e test', () => {
     deadline: '2024-03-16T15:29:59.122Z',
   };
 
-  let assessment;
+  let assignment;
 
   beforeEach(() => {
     cy.login(username, password);
@@ -37,19 +37,19 @@ describe('Assessment e2e test', () => {
   });
 
   afterEach(() => {
-    if (assessment) {
+    if (assignment) {
       cy.authenticatedRequest({
         method: 'DELETE',
-        url: `/api/assessments/${assessment.id}`,
+        url: `/api/assessments/${assignment.id}`,
       }).then(() => {
-        assessment = undefined;
+        assignment = undefined;
       });
     }
   });
 
   it('Assessments menu should load Assessments page', () => {
     cy.visit('/');
-    cy.clickOnEntityMenuItem('assessment');
+    cy.clickOnEntityMenuItem('assignment');
     cy.wait('@entitiesRequest').then(({ response }) => {
       if (response.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
@@ -70,7 +70,7 @@ describe('Assessment e2e test', () => {
 
       it('should load create Assessment page', () => {
         cy.get(entityCreateButtonSelector).click();
-        cy.url().should('match', new RegExp('/assessment/new$'));
+        cy.url().should('match', new RegExp('/assignment/new$'));
         cy.getEntityCreateUpdateHeading('Assessment');
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
@@ -88,7 +88,7 @@ describe('Assessment e2e test', () => {
           url: '/api/assessments',
           body: assessmentSample,
         }).then(({ body }) => {
-          assessment = body;
+          assignment = body;
 
           cy.intercept(
             {
@@ -101,7 +101,7 @@ describe('Assessment e2e test', () => {
               headers: {
                 link: '<http://localhost/api/assessments?page=0&size=20>; rel="last",<http://localhost/api/assessments?page=0&size=20>; rel="first"',
               },
-              body: [assessment],
+              body: [assignment],
             },
           ).as('entitiesRequestInternal');
         });
@@ -113,7 +113,7 @@ describe('Assessment e2e test', () => {
 
       it('detail button click should load details Assessment page', () => {
         cy.get(entityDetailsButtonSelector).first().click();
-        cy.getEntityDetailsHeading('assessment');
+        cy.getEntityDetailsHeading('assignment');
         cy.get(entityDetailsBackButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
           expect(response.statusCode).to.equal(200);
@@ -146,7 +146,7 @@ describe('Assessment e2e test', () => {
         cy.intercept('GET', '/api/assessments/*').as('dialogDeleteRequest');
         cy.get(entityDeleteButtonSelector).last().click();
         cy.wait('@dialogDeleteRequest');
-        cy.getEntityDeleteDialogHeading('assessment').should('exist');
+        cy.getEntityDeleteDialogHeading('assignment').should('exist');
         cy.get(entityConfirmDeleteButtonSelector).click();
         cy.wait('@deleteEntityRequest').then(({ response }) => {
           expect(response.statusCode).to.equal(204);
@@ -156,7 +156,7 @@ describe('Assessment e2e test', () => {
         });
         cy.url().should('match', assessmentPageUrlPattern);
 
-        assessment = undefined;
+        assignment = undefined;
       });
     });
   });
@@ -204,7 +204,7 @@ describe('Assessment e2e test', () => {
 
       cy.wait('@postEntityRequest').then(({ response }) => {
         expect(response.statusCode).to.equal(201);
-        assessment = response.body;
+        assignment = response.body;
       });
       cy.wait('@entitiesRequest').then(({ response }) => {
         expect(response.statusCode).to.equal(200);

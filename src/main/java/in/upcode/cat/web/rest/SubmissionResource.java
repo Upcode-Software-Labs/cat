@@ -1,6 +1,10 @@
 package in.upcode.cat.web.rest;
 
+import in.upcode.cat.domain.Assignment;
+import in.upcode.cat.domain.User;
+import in.upcode.cat.repository.AssignmentRepository;
 import in.upcode.cat.repository.SubmissionRepository;
+import in.upcode.cat.repository.UserRepository;
 import in.upcode.cat.service.SubmissionService;
 import in.upcode.cat.service.dto.SubmissionDTO;
 import in.upcode.cat.web.rest.errors.BadRequestAlertException;
@@ -8,11 +12,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,11 +46,25 @@ public class SubmissionResource {
 
     private final SubmissionService submissionService;
 
-    private final SubmissionRepository submissionRepository;
+    @Autowired
+    UserRepository userRepository;
 
-    public SubmissionResource(SubmissionService submissionService, SubmissionRepository submissionRepository) {
+    @Autowired
+    AssignmentRepository assignmentRepository;
+
+    @Autowired
+    SubmissionRepository submissionRepository;
+
+    public SubmissionResource(
+        SubmissionService submissionService,
+        SubmissionRepository submissionRepository,
+        UserRepository userRepository,
+        AssignmentRepository assignmentRepository
+    ) {
         this.submissionService = submissionService;
         this.submissionRepository = submissionRepository;
+        this.userRepository = userRepository;
+        this.assignmentRepository = assignmentRepository;
     }
 
     /**
@@ -141,15 +161,87 @@ public class SubmissionResource {
      * {@code GET  /submissions} : get all the submissions.
      *
      * @param pageable the pagination information.
+     * @param userId the students name
+     * @param typeId the assessment type
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of submissions in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<SubmissionDTO>> getAllSubmissions(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Submissions");
-        Page<SubmissionDTO> page = submissionService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    public ResponseEntity<List<SubmissionDTO>> getAllSubmissions(
+        @RequestParam(required = false) String userId,
+        @RequestParam(required = false) String typeId,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get a page of Submissions based on search");
+
+        Page<SubmissionDTO> page;
+        HttpHeaders headers;
+
+        if (userId != null && typeId != null) {
+            // Case: Both user and type parameters are provided
+            page = submissionService.findByUserIdAndTypeId(userId, typeId, pageable);
+        } else if (userId != null) {
+            // Case: Only user parameter is provided
+            page = submissionService.findByUserId(userId, pageable);
+        } else if (typeId != null) {
+            page = submissionService.findByTypeId(typeId, pageable);
+        } else {
+            // Case: No parameters provided, return all submissions
+            page = submissionService.findAll(pageable);
+        }
+        headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
+    /**
+     * {@code GET  /submissions/search} : get all the submissions.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of submissions in body.
+     */
+    //    @GetMapping("/search")
+    //    public ResponseEntity<List<SubmissionDTO>> getSubmissionsBySearch(
+    //        @RequestParam(required = false) String user,
+    //        @RequestParam(required = false) String type,
+    //        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    //    ) {
+    //        log.debug("REST request to get a page of Submissions based on search");
+    //
+    //        final User userOptional;
+    //        final String userId;
+    //
+    //        final Assignment assignmentOptional;
+    //        final String assessmentId;
+    //
+    //        if (user != null) {
+    //            Optional<User> userName = userRepository.findOneByLoginRegexIgnoreCase(user);
+    //            if (userName.isPresent()) {
+    //                userOptional = userName.get();
+    //                userId = userOptional.getId();
+    //
+    //                Page<SubmissionDTO> page = submissionService.findByUserId(userId, pageable);
+    //                HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //                return ResponseEntity.ok().headers(headers).body(page.getContent());
+    //            } else {
+    //                return ResponseEntity.ok().body(Collections.emptyList());
+    //            }
+    //        } else if (type != null) {
+    //            //get the id of the assessment based on search
+    //            Optional<Assignment> assessmentName = assignmentRepository.findByTypeRegexIgnoreCase(type);
+    //            if (assessmentName.isPresent()) {
+    //                assignmentOptional = assessmentName.get();
+    //                assessmentId = assignmentOptional.getId();
+    //
+    //                Page<SubmissionDTO> page = submissionService.findByAssignmentId(assessmentId, pageable);
+    //                HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+    //                return ResponseEntity.ok().headers(headers).body(page.getContent());
+    //            } else {
+    //                return ResponseEntity.ok().body(Collections.emptyList());
+    //            }
+    //        } else {
+    //            // Return an empty list
+    //            return ResponseEntity.ok().body(Collections.emptyList());
+    //        }
+    //    }
 
     /**
      * {@code GET  /submissions/:id} : get the "id" submission.

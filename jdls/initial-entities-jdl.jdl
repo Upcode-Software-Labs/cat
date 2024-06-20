@@ -8,28 +8,32 @@ entity User {
 }
 
 
-entity Assessment {
-  title String required,
+entity Assignment {
   description TextBlob,
-  languageFramework String,
+  technology String,
+  image byte[],
+  url String,
   difficultyLevel String,
-  timeLimit Integer
-  type String required,
-  validationCriteria String required,
+  timeLimit Integer,
   question String required,
   maxPoints Integer required,
-  deadline ZonedDateTime required
+  deadline ZonedDateTime required,
+  evaluationType String required
 }
 
+entity Category {
+  id Long,
+  assignmentType String,
+  image String
+}
 
-
-entity UserAssessment {
-  status AssessmentStatus required,
+entity UserAssignment {
+  status AssignmentStatus required,
   assignedAt Instant required,
   deadline Instant
 }
 
-enum AssessmentStatus {
+enum AssignmentStatus {
   ASSIGNED
   COMPLETED
 }
@@ -38,32 +42,19 @@ enum AssessmentStatus {
 entity Submission {
   githubUrl String required,
   screenshots ImageBlob,
-  videoExplanation String,
   textDescription String,
   feedback TextBlob,
-  pointsScored Integer
+  pointsScored Integer,
+  timeTaken Instant
 }
 
 // Relationships
 relationship ManyToOne {
-  Assessment{assignedToUser} to User,
-  UserAssessment{submittedByUser} to User,
-  Submission{forAssignment} to UserAssessment
+  UserAssignment{user} to User,
+  Submission{forAssignment} to UserAssignment,
+  Assignment{type} to Category
 }
 
-
-entity Question {
-  questionText TextBlob required,
-  codeSnippet TextBlob,
-  resources String,
-  points Integer
-}
-
-entity ValidationRule {
-  description TextBlob required,
-  validationScript TextBlob,
-  ruleType String required
-}
 
 entity SubmissionResult {
   totalPoints Integer,
@@ -79,12 +70,8 @@ entity AuditLog {
 
 
 relationship ManyToOne {
-  Question{assessment} to Assessment,
-  Submission{user} to User,
-  Submission{assessment} to Assessment,
-  ValidationRule{assessment} to Assessment,
-  UserAssessment{user} to User,
-  UserAssessment{assessment} to Assessment,
+  UserAssignment{user} to User,
+  UserAssignment{assignment} to Assignment,
   SubmissionResult{submission} to Submission,
   AuditLog{user} to User
 }

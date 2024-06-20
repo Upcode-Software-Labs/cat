@@ -2,6 +2,8 @@ package in.upcode.cat.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -17,20 +19,19 @@ public class SubmissionDTO implements Serializable {
 
     private byte[] screenshots;
 
-    private String screenshotsContentType;
-    private String videoExplanation;
-
     private String textDescription;
 
     private String feedback;
 
     private Integer pointsScored;
 
-    private UserAssessmentDTO forAssignment;
+    private UserAssignmentDTO forAssignment;
+
+    private Instant timeTaken;
 
     private UserDTO user;
 
-    private AssessmentDTO assessment;
+    private AssignmentDTO assignment;
 
     public String getId() {
         return id;
@@ -54,22 +55,6 @@ public class SubmissionDTO implements Serializable {
 
     public void setScreenshots(byte[] screenshots) {
         this.screenshots = screenshots;
-    }
-
-    public String getScreenshotsContentType() {
-        return screenshotsContentType;
-    }
-
-    public void setScreenshotsContentType(String screenshotsContentType) {
-        this.screenshotsContentType = screenshotsContentType;
-    }
-
-    public String getVideoExplanation() {
-        return videoExplanation;
-    }
-
-    public void setVideoExplanation(String videoExplanation) {
-        this.videoExplanation = videoExplanation;
     }
 
     public String getTextDescription() {
@@ -96,12 +81,20 @@ public class SubmissionDTO implements Serializable {
         this.pointsScored = pointsScored;
     }
 
-    public UserAssessmentDTO getForAssignment() {
+    public UserAssignmentDTO getForAssignment() {
         return forAssignment;
     }
 
-    public void setForAssignment(UserAssessmentDTO forAssignment) {
+    public void setForAssignment(UserAssignmentDTO forAssignment) {
         this.forAssignment = forAssignment;
+    }
+
+    public Instant getTimeTaken() {
+        return timeTaken;
+    }
+
+    public void setTimeTaken(Instant timeTaken) {
+        this.timeTaken = timeTaken;
     }
 
     public UserDTO getUser() {
@@ -112,12 +105,12 @@ public class SubmissionDTO implements Serializable {
         this.user = user;
     }
 
-    public AssessmentDTO getAssessment() {
-        return assessment;
+    public AssignmentDTO getAssignment() {
+        return assignment;
     }
 
-    public void setAssessment(AssessmentDTO assessment) {
-        this.assessment = assessment;
+    public void setAssignment(AssignmentDTO assignment) {
+        this.assignment = assignment;
     }
 
     @Override
@@ -142,19 +135,20 @@ public class SubmissionDTO implements Serializable {
     }
 
     // prettier-ignore
+
     @Override
     public String toString() {
         return "SubmissionDTO{" +
-            "id='" + getId() + "'" +
-            ", githubUrl='" + getGithubUrl() + "'" +
-            ", screenshots='" + getScreenshots() + "'" +
-            ", videoExplanation='" + getVideoExplanation() + "'" +
-            ", textDescription='" + getTextDescription() + "'" +
-            ", feedback='" + getFeedback() + "'" +
-            ", pointsScored=" + getPointsScored() +
-            ", forAssignment=" + getForAssignment() +
-            ", user=" + getUser() +
-            ", assessment=" + getAssessment() +
-            "}";
+            "id='" + id + '\'' +
+            ", githubUrl='" + githubUrl + '\'' +
+            ", screenshots=" + Arrays.toString(screenshots) +
+            ", textDescription='" + textDescription + '\'' +
+            ", feedback='" + feedback + '\'' +
+            ", pointsScored=" + pointsScored +
+            ", forAssignment=" + forAssignment +
+            ", timeTaken=" + timeTaken +
+            ", user=" + user +
+            ", assignment=" + assignment +
+            '}';
     }
 }

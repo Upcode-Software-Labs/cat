@@ -1,6 +1,6 @@
-import { IUserAssessment } from 'app/shared/model/user-assessment.model';
+import { IUserAssessment } from 'app/shared/model/user-assignment.model';
 import { IUser } from 'app/shared/model/user.model';
-import { IAssessment } from 'app/shared/model/assessment.model';
+import { IAssessment } from 'app/shared/model/assignment.model';
 
 export interface ISubmission {
   id?: string;
@@ -13,7 +13,7 @@ export interface ISubmission {
   pointsScored?: number | null;
   forAssignment?: IUserAssessment | null;
   user?: IUser | null;
-  assessment?: IAssessment | null;
+  assignment?: IAssessment | null;
 }
 
 export const defaultValue: Readonly<ISubmission> = {};

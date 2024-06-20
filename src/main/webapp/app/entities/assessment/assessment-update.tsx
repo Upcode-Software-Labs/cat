@@ -10,8 +10,8 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IUser } from 'app/shared/model/user.model';
 import { getUsers } from 'app/modules/administration/user-management/user-management.reducer';
-import { IAssessment } from 'app/shared/model/assessment.model';
-import { getEntity, updateEntity, createEntity, reset } from './assessment.reducer';
+import { IAssessment } from 'app/shared/model/assignment.model';
+import { getEntity, updateEntity, createEntity, reset } from './assignment.reducer';
 
 export const AssessmentUpdate = () => {
   const dispatch = useAppDispatch();
@@ -22,13 +22,13 @@ export const AssessmentUpdate = () => {
   const isNew = id === undefined;
 
   const users = useAppSelector(state => state.userManagement.users);
-  const assessmentEntity = useAppSelector(state => state.assessment.entity);
-  const loading = useAppSelector(state => state.assessment.loading);
-  const updating = useAppSelector(state => state.assessment.updating);
-  const updateSuccess = useAppSelector(state => state.assessment.updateSuccess);
+  const assessmentEntity = useAppSelector(state => state.assignment.entity);
+  const loading = useAppSelector(state => state.assignment.loading);
+  const updating = useAppSelector(state => state.assignment.updating);
+  const updateSuccess = useAppSelector(state => state.assignment.updateSuccess);
 
   const handleClose = () => {
-    navigate('/assessment' + location.search);
+    navigate('/assignment' + location.search);
   };
 
   useEffect(() => {
@@ -85,8 +85,8 @@ export const AssessmentUpdate = () => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="catApp.assessment.home.createOrEditLabel" data-cy="AssessmentCreateUpdateHeading">
-            <Translate contentKey="catApp.assessment.home.createOrEditLabel">Create or edit a Assessment</Translate>
+          <h2 id="catApp.assignment.home.createOrEditLabel" data-cy="AssessmentCreateUpdateHeading">
+            <Translate contentKey="catApp.assignment.home.createOrEditLabel">Create or edit a Assessment</Translate>
           </h2>
         </Col>
       </Row>
@@ -101,14 +101,14 @@ export const AssessmentUpdate = () => {
                   name="id"
                   required
                   readOnly
-                  id="assessment-id"
+                  id="assignment-id"
                   label={translate('global.field.id')}
                   validate={{ required: true }}
                 />
               ) : null}
               <ValidatedField
-                label={translate('catApp.assessment.title')}
-                id="assessment-title"
+                label={translate('catApp.assignment.title')}
+                id="assignment-title"
                 name="title"
                 data-cy="title"
                 type="text"
@@ -117,36 +117,36 @@ export const AssessmentUpdate = () => {
                 }}
               />
               <ValidatedField
-                label={translate('catApp.assessment.description')}
-                id="assessment-description"
+                label={translate('catApp.assignment.description')}
+                id="assignment-description"
                 name="description"
                 data-cy="description"
                 type="textarea"
               />
               <ValidatedField
-                label={translate('catApp.assessment.languageFramework')}
-                id="assessment-languageFramework"
+                label={translate('catApp.assignment.languageFramework')}
+                id="assignment-languageFramework"
                 name="languageFramework"
                 data-cy="languageFramework"
                 type="text"
               />
               <ValidatedField
-                label={translate('catApp.assessment.difficultyLevel')}
-                id="assessment-difficultyLevel"
+                label={translate('catApp.assignment.difficultyLevel')}
+                id="assignment-difficultyLevel"
                 name="difficultyLevel"
                 data-cy="difficultyLevel"
                 type="text"
               />
               <ValidatedField
-                label={translate('catApp.assessment.timeLimit')}
-                id="assessment-timeLimit"
+                label={translate('catApp.assignment.timeLimit')}
+                id="assignment-timeLimit"
                 name="timeLimit"
                 data-cy="timeLimit"
                 type="text"
               />
               <ValidatedField
-                label={translate('catApp.assessment.type')}
-                id="assessment-type"
+                label={translate('catApp.assignment.type')}
+                id="assignment-type"
                 name="type"
                 data-cy="type"
                 type="text"
@@ -155,8 +155,8 @@ export const AssessmentUpdate = () => {
                 }}
               />
               <ValidatedField
-                label={translate('catApp.assessment.validationCriteria')}
-                id="assessment-validationCriteria"
+                label={translate('catApp.assignment.validationCriteria')}
+                id="assignment-validationCriteria"
                 name="validationCriteria"
                 data-cy="validationCriteria"
                 type="text"
@@ -165,8 +165,8 @@ export const AssessmentUpdate = () => {
                 }}
               />
               <ValidatedField
-                label={translate('catApp.assessment.question')}
-                id="assessment-question"
+                label={translate('catApp.assignment.question')}
+                id="assignment-question"
                 name="question"
                 data-cy="question"
                 type="text"
@@ -175,8 +175,8 @@ export const AssessmentUpdate = () => {
                 }}
               />
               <ValidatedField
-                label={translate('catApp.assessment.maxPoints')}
-                id="assessment-maxPoints"
+                label={translate('catApp.assignment.maxPoints')}
+                id="assignment-maxPoints"
                 name="maxPoints"
                 data-cy="maxPoints"
                 type="text"
@@ -186,8 +186,8 @@ export const AssessmentUpdate = () => {
                 }}
               />
               <ValidatedField
-                label={translate('catApp.assessment.deadline')}
-                id="assessment-deadline"
+                label={translate('catApp.assignment.deadline')}
+                id="assignment-deadline"
                 name="deadline"
                 data-cy="deadline"
                 type="datetime-local"
@@ -197,10 +197,10 @@ export const AssessmentUpdate = () => {
                 }}
               />
               <ValidatedField
-                id="assessment-assignedToUser"
+                id="assignment-assignedToUser"
                 name="assignedToUser"
                 data-cy="assignedToUser"
-                label={translate('catApp.assessment.assignedToUser')}
+                label={translate('catApp.assignment.assignedToUser')}
                 type="select"
               >
                 <option value="" key="0" />
@@ -212,7 +212,7 @@ export const AssessmentUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/assessment" replace color="info">
+              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/assignment" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">

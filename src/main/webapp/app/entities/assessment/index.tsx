@@ -3,10 +3,10 @@ import { Route } from 'react-router-dom';
 
 import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
 
-import Assessment from './assessment';
-import AssessmentDetail from './assessment-detail';
-import AssessmentUpdate from './assessment-update';
-import AssessmentDeleteDialog from './assessment-delete-dialog';
+import Assessment from './assignment';
+import AssessmentDetail from './assignment-detail';
+import AssessmentUpdate from './assignment-update';
+import AssessmentDeleteDialog from './assignment-delete-dialog';
 
 const AssessmentRoutes = () => (
   <ErrorBoundaryRoutes>
